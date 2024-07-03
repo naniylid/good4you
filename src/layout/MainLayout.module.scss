@@ -1,0 +1,172 @@
+@import '../styles/colors&fonts.scss';
+
+.wrapper {
+  position: relative;
+  min-height: 100%;
+}
+
+main {
+  padding-bottom: 90px;
+}
+
+.layout {
+  h3 {
+    font-weight: 700;
+    font-size: 30px;
+    line-height: 147%;
+    color: #fff;
+    padding: 23px 0;
+  }
+
+  li {
+    a {
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 143%;
+      color: #fff;
+
+      &:hover {
+        text-decoration: underline;
+        text-decoration-skip-ink: none;
+        color: #c4c4c4;
+      }
+    }
+  }
+}
+
+.navigation {
+  height: 90px;
+  padding: 0 130px;
+  display: flex;
+  justify-content: space-between;
+  background-color: $purple;
+
+  &__menu {
+    padding: 35px 0;
+    display: flex;
+    column-gap: 40px;
+    width: 340px;
+    height: 20px;
+
+    .cart-wrapper {
+      display: flex;
+
+      &__title {
+        margin-top: 2.2px;
+      }
+
+      &__item {
+        margin-left: 6px;
+        display: flex;
+
+        .count {
+          position: absolute;
+          padding: 2px 4px;
+          margin: 12px;
+          border-radius: 6px;
+          width: 12px;
+          height: 12px;
+          background: $button;
+          font-weight: 400;
+          font-size: 8px;
+          line-height: 100%;
+          text-align: center;
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 90px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 130px;
+  background-color: $footer;
+
+  &__menu {
+    padding: 35px 0;
+    display: flex;
+    column-gap: 40px;
+  }
+}
+
+/* Адаптивные стили */
+@media (max-width: 1200px) {
+  .navigation {
+    padding: 0 50px;
+    &__menu {
+      width: auto;
+      column-gap: 20px;
+    }
+  }
+  .footer {
+    padding: 0 50px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navigation {
+    flex-direction: column;
+    align-items: center;
+    height: auto;
+    padding: 20px 20px;
+
+    &__menu {
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 0;
+      column-gap: 0;
+      row-gap: 20px;
+    }
+  }
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout {
+    h3 {
+      font-size: 24px;
+    }
+
+    li {
+      a {
+        font-size: 12px;
+      }
+    }
+  }
+
+  .navigation {
+    &__menu {
+      width: 100%;
+      li {
+        a {
+          text-align: center;
+          display: block;
+          width: 100%;
+        }
+      }
+    }
+  }
+  .footer {
+    h3 {
+      font-size: 24px;
+    }
+    &__menu {
+      li {
+        a {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}

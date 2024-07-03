@@ -1,0 +1,54 @@
+$purple: #484283;
+$footer: #444b58;
+$button: #f14f4f;
+$button-hover: #8c2828;
+$button-disabled: #f8afaf;
+$link-light: #b2b5bb;
+$link-dark: #444b58;
+
+@font-face {
+  font-family: 'Jost';
+  src: local('Jost SemiBold'), local('Jost-SemiBold'),
+    url('./fonts/Jost-SemiBold.woff2') format('woff2'),
+    url('./fonts/Jost-SemiBold.woff') format('woff'),
+    url('./fonts/Jost-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Jost';
+  src: local('Jost Regular'), local('Jost-Regular'),
+    url('./fonts/Jost-Regular.woff2') format('woff2'),
+    url('./fonts/Jost-Regular.woff') format('woff'),
+    url('./fonts/Jost-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Jost';
+  src: local('Jost Bold'), local('Jost-Bold'), url('./fonts/Jost-Bold.woff2') format('woff2'),
+    url('./fonts/Jost-Bold.woff') format('woff'), url('./fonts/Jost-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Jost';
+  src: local('Jost Medium'), local('Jost-Medium'), url('./fonts/Jost-Medium.woff2') format('woff2'),
+    url('./fonts/Jost-Medium.woff') format('woff'),
+    url('./fonts/Jost-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Jost';
+  src: local('Jost ExtraBold'), local('Jost-ExtraBold'),
+    url('./fonts/Jost-ExtraBold.woff2') format('woff2'),
+    url('./fonts/Jost-ExtraBold.woff') format('woff'),
+    url('./fonts/Jost-ExtraBold.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+}

@@ -1,0 +1,148 @@
+@import '../../styles/colors&fonts.scss';
+
+.faq {
+  background-color: $purple;
+  padding: 60px 280px;
+
+  h2 {
+    font-weight: 700;
+    font-size: 36px;
+    line-height: 156%;
+    color: #fff;
+    height: 56px;
+  }
+
+  &-block {
+    margin-top: 20px;
+    width: 880px;
+
+    &__item {
+      color: #fff;
+
+      .question {
+        border-top: 1px solid #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: background-color 0.6s ease;
+        cursor: pointer;
+
+        h4 {
+          padding: 20px 0;
+          font-weight: 400;
+          font-size: 20px;
+          line-height: 150%;
+        }
+
+        &.open {
+          .cross {
+            transform: rotate(45deg);
+          }
+        }
+      }
+
+      .answer {
+        overflow: hidden;
+        transition: max-height 0.2s ease;
+
+        .content {
+          font-weight: 600;
+          font-size: 16px;
+          line-height: 162%;
+          padding: 20px 0;
+        }
+      }
+
+      .cross {
+        position: relative;
+        transition: transform 0.2s ease-in-out;
+
+        svg {
+          transition: transform 0.2s ease-in-out;
+          transform: rotate(90deg);
+        }
+      }
+
+      &:last-child {
+        border-bottom: 1px solid #fff;
+      }
+    }
+  }
+
+  @media (max-width: 1200px) {
+    padding: 60px 150px;
+
+    .faq-block {
+      width: 100%;
+      padding: 0 20px;
+    }
+  }
+
+  @media (max-width: 992px) {
+    padding: 60px 80px;
+
+    h2 {
+      font-size: 32px;
+      height: auto;
+    }
+
+    .faq-block {
+      width: 100%;
+      padding: 0 10px;
+
+      &__item {
+        .question h4 {
+          font-size: 18px;
+        }
+
+        .answer {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 40px 40px;
+
+    h2 {
+      font-size: 28px;
+    }
+
+    .faq-block {
+      width: 100%;
+
+      &__item {
+        .question h4 {
+          font-size: 16px;
+        }
+
+        .answer {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    padding: 30px 20px;
+
+    h2 {
+      font-size: 24px;
+    }
+
+    .faq-block {
+      width: 100%;
+
+      &__item {
+        .question h4 {
+          font-size: 14px;
+        }
+
+        .answer {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
