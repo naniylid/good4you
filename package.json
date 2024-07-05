@@ -41,6 +41,7 @@
     "match-media-mock": "^0.1.1",
     "mock-match-media": "^0.4.3",
     "react-content-loader": "^7.0.0",
+    "react-helmet-async": "^2.0.5",
     "react-paginate": "^8.2.0",
     "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.3",
