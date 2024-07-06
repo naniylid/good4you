@@ -1,8 +1,11 @@
 import React from 'react';
 import { Outlet, Link, NavLink } from 'react-router-dom';
 import './MainLayout.module.scss';
+import { useCart } from '../context/CartContext';
 
 const MainLayout: React.FC = () => {
+  const { totalCount } = useCart();
+
   const [isNavExpanded, setIsNavExpanded] = React.useState(false);
 
   return (
@@ -58,7 +61,7 @@ const MainLayout: React.FC = () => {
                     />
                   </svg>
                   <p aria-label='Counter' className='count'>
-                    1
+                    {totalCount}
                   </p>
                 </div>
               </Link>

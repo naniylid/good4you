@@ -1,54 +1,43 @@
 {
-  "name": "Goods4you",
+  "name": "goods4you",
   "author": "naniylid",
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "browserslist": [
+    "cover 99.5%"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
-    "test": "vitest --coverage"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@shopify/jest-dom-mocks": "^5.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@reduxjs/toolkit": "^2.2.3",
-    "@testing-library/jest-dom": "^6.4.2",
-    "@testing-library/react": "^15.0.5",
-    "@testing-library/user-event": "^14.5.2",
-    "@types/jest": "^29.5.12",
     "@types/lodash": "^4.17.0",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
-    "@vitest/coverage-v8": "^1.5.3",
+    "autoprefixer": "^10.4.19",
     "axios": "^1.6.8",
-    "axios-mock-adapter": "^1.22.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
-    "jest": "^29.7.0",
-    "jest-matchmedia-mock": "^1.1.0",
     "jsdom": "^24.0.0",
     "lodash": "^4.17.21",
-    "match-media-mock": "^0.1.1",
-    "mock-match-media": "^0.4.3",
+    "postcss": "^8.4.39",
     "react-content-loader": "^7.0.0",
     "react-helmet-async": "^2.0.5",
-    "react-paginate": "^8.2.0",
-    "react-redux": "^9.1.0",
     "react-router-dom": "^6.22.3",
     "sass": "^1.74.1",
-    "ts-jest": "^29.1.2",
+    "swiper": "^11.1.4",
     "typescript": "^5.2.2",
-    "vite": "^5.2.0",
-    "vitest": "^1.5.3"
+    "vite": "^5.2.0"
   }
 }

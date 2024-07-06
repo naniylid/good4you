@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom';
 import { debounce } from 'lodash';
 import './Catalog.module.scss';
 import { catalogData } from './data';
+import { useCart } from '../../context/CartContext';
 import image from './image.svg';
+import { Skeleton } from './Skeleton';
 
 export const Catalog: React.FC = () => {
+  const { cartItems, addToCart, increaseItem, decreaseItem } = useCart();
   const [itemsToShow, setItemsToShow] = React.useState<number>(12);
-  const [cartItems, setCartItems] = React.useState<{ [key: number]: number }>({});
   const [search, setSearch] = React.useState('');
   const totalItems = catalogData.length;
 
@@ -16,29 +18,7 @@ export const Catalog: React.FC = () => {
   };
 
   const handleAddToCart = (index: number) => {
-    setCartItems((prevCartItems) => ({
-      ...prevCartItems,
-      [index]: (prevCartItems[index] || 0) + 1,
-    }));
-  };
-
-  const handleIncrease = (index: number) => {
-    setCartItems((prevCartItems) => ({
-      ...prevCartItems,
-      [index]: (prevCartItems[index] || 0) + 1,
-    }));
-  };
-
-  const handleDecrease = (index: number) => {
-    setCartItems((prevCartItems) => {
-      const newCartItems = { ...prevCartItems };
-      if (newCartItems[index] > 1) {
-        newCartItems[index] -= 1;
-      } else {
-        delete newCartItems[index];
-      }
-      return newCartItems;
-    });
+    addToCart(index);
   };
 
   const updateSearchValue = React.useCallback(
@@ -59,8 +39,8 @@ export const Catalog: React.FC = () => {
   return (
     <section id='catalog' className='catalog' aria-labelledby='catalog-heading'>
       <h2 id='catalog-heading'>Catalog</h2>
-      <label htmlFor='search-input'>Search by title</label>
       <input
+        aria-label='Search by title'
         type='text'
         placeholder='Search by title'
         value={search}
@@ -82,10 +62,10 @@ export const Catalog: React.FC = () => {
                   <h4 className={cartItems[item.id] ? 'cart-active' : ''}>{item.title}</h4>
                   <p>${item.price}</p>
                 </div>
-                <div className='button' onClick={(e) => e.preventDefault()}>
+                <div className='button'>
                   {cartItems[item.id] ? (
-                    <div className='cart-controls'>
-                      <button aria-label='Decrease' onClick={() => handleDecrease(item.id)}>
+                    <div className='cart-controls' onClick={(e) => e.preventDefault()}>
+                      <button aria-label='Decrease' onClick={() => decreaseItem(item.id)}>
                         <svg
                           aria-hidden='true'
                           width='18'
@@ -105,7 +85,7 @@ export const Catalog: React.FC = () => {
                           ? `${cartItems[item.id]} items`
                           : `${cartItems[item.id]} item`}{' '}
                       </p>
-                      <button aria-label='Increase' onClick={() => handleIncrease(item.id)}>
+                      <button aria-label='Increase' onClick={() => increaseItem(item.id)}>
                         <svg
                           aria-hidden='true'
                           width='18'
@@ -126,27 +106,35 @@ export const Catalog: React.FC = () => {
                       </button>
                     </div>
                   ) : (
-                    <button aria-label='Add to cart' onClick={() => handleAddToCart(item.id)}>
-                      <svg
-                        aria-hidden='true'
-                        width='18'
-                        height='18'
-                        viewBox='0 0 18 18'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'
+                    <div onClick={(e) => e.preventDefault()}>
+                      <button
+                        aria-label='Add to cart'
+                        onClick={() => {
+                          handleAddToCart(item.id);
+                        }}
                       >
-                        <path
-                          d='M18 6.42857H14.9434L11.7323 0.312012C11.573 0.0081746 11.2275 -0.0910269 10.9605 0.0916648C10.6941 0.274357 10.6079 0.669215 10.7677 0.973701L13.6315 6.42857H4.36849L7.23228 0.973658C7.39214 0.669172 7.3059 0.274313 7.03948 0.0916215C6.77196 -0.0910702 6.42755 0.00813134 6.2677 0.311968L3.05655 6.42853H0V7.71425H1.22086L2.64989 16.4261C2.79929 17.3383 3.49692 18 4.30884 18H13.6912C14.503 18 15.2007 17.3383 15.3495 16.4268L16.7791 7.71425H18C18 7.71425 18 6.42857 18 6.42857ZM14.2437 16.1901C14.1943 16.4939 13.9619 16.7143 13.6911 16.7143H4.30884C4.03803 16.7143 3.80569 16.494 3.7557 16.1895L2.3651 7.71425H15.6349L14.2437 16.1901Z'
-                          fill='white'
-                        />
-                      </svg>
-                    </button>
+                        <svg
+                          aria-hidden='true'
+                          width='18'
+                          height='18'
+                          viewBox='0 0 18 18'
+                          fill='none'
+                          xmlns='http://www.w3.org/2000/svg'
+                        >
+                          <path
+                            d='M18 6.42857H14.9434L11.7323 0.312012C11.573 0.0081746 11.2275 -0.0910269 10.9605 0.0916648C10.6941 0.274357 10.6079 0.669215 10.7677 0.973701L13.6315 6.42857H4.36849L7.23228 0.973658C7.39214 0.669172 7.3059 0.274313 7.03948 0.0916215C6.77196 -0.0910702 6.42755 0.00813134 6.2677 0.311968L3.05655 6.42853H0V7.71425H1.22086L2.64989 16.4261C2.79929 17.3383 3.49692 18 4.30884 18H13.6912C14.503 18 15.2007 17.3383 15.3495 16.4268L16.7791 7.71425H18C18 7.71425 18 6.42857 18 6.42857ZM14.2437 16.1901C14.1943 16.4939 13.9619 16.7143 13.6911 16.7143H4.30884C4.03803 16.7143 3.80569 16.494 3.7557 16.1895L2.3651 7.71425H15.6349L14.2437 16.1901Z'
+                            fill='white'
+                          />
+                        </svg>
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
             </Link>
           </li>
         ))}
+        <Skeleton />
       </ul>
       {itemsToShow < totalItems && (
         <div className='show-more'>

@@ -1,17 +1,15 @@
 .cart {
   width: 100%;
   max-width: 1180px;
+  min-height: 100vh;
   padding: 48px 130px;
 
   @media (max-width: 1290px) {
     padding: 48px 50px;
   }
 
-  h2 {
-    font-weight: 700;
-    font-size: 36px;
-    line-height: 156%;
-    color: #444b58;
+  &__empty {
+    margin-top: 20px;
   }
 
   &--block {
