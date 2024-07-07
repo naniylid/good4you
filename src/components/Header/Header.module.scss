@@ -6,7 +6,7 @@
   &--wrapper {
     position: relative;
     height: 500px;
-    margin: 0 130px;
+    margin: 0 209.5px 0 130px;
     padding: 115px 0;
     border-top: 1px solid #fff;
 
@@ -30,7 +30,6 @@
 
       button {
         border-radius: 4px;
-        padding: 20px 50px;
         width: 207px;
         height: 62px;
         font-weight: 400;
@@ -54,16 +53,19 @@
   }
 }
 
-/* Адаптивные стили */
+@media (max-width: 1290px) {
+  .header--wrapper {
+    &__background {
+      width: 100%;
+      font-size: 130px;
+    }
+  }
+}
+
 @media (max-width: 1200px) {
   .header--wrapper {
     margin: 0 50px;
     padding: 80px 0;
-
-    &__background {
-      width: 100%;
-      font-size: 150px;
-    }
 
     &__content {
       h1 {
@@ -87,29 +89,21 @@
 
 @media (max-width: 768px) {
   .header--wrapper {
-    margin: 0 20px;
-    padding: 60px 0;
+    display: flex;
+    justify-content: center;
 
     &__background {
-      width: 100%;
-      font-size: 100px;
+      visibility: hidden;
     }
 
     &__content {
       h1 {
-        font-size: 24px;
+        font-size: 26px;
       }
 
       p {
-        padding: 15px 0;
-        font-size: 12px;
-      }
-
-      button {
-        padding: 10px 30px;
-        width: 150px;
-        height: 40px;
-        font-size: 12px;
+        padding: 30px 0;
+        font-size: 15px;
       }
     }
   }

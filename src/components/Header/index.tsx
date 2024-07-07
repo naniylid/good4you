@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Header.module.scss';
 
 export const Header: React.FC = () => {
@@ -14,7 +15,9 @@ export const Header: React.FC = () => {
             We sell smartphones, laptops, clothes, shoes <br /> and many other products at low
             prices
           </p>
-          <button>Go to shopping</button>
+          <Link to='/#catalog'>
+            <button>Go to shopping</button>
+          </Link>
         </div>
       </div>
     </header>

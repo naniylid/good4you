@@ -25,8 +25,8 @@ export const FAQ: React.FC = () => {
   ];
 
   return (
-    <section className='faq'>
-      <h2>FAQ</h2>
+    <section id='faq' className='faq'>
+      <h2 title='Frequently Asked Questions'>FAQ</h2>
       <div className='faq-block'>
         {faqData.map(({ question, answer, id }) => (
           <Accordion key={id} question={question} answer={answer} />

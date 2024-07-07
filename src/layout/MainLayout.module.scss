@@ -15,7 +15,6 @@ main {
     font-size: 30px;
     line-height: 147%;
     color: #fff;
-    padding: 23px 0;
   }
 
   li {
@@ -35,18 +34,31 @@ main {
 }
 
 .navigation {
-  height: 90px;
-  padding: 0 130px;
+  position: relative;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  height: 90px;
+  padding: 0 209.5px 0 130px;
   background-color: $purple;
 
+  @media (max-width: 1200px) {
+    padding: 0 50px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
+
+  @media (max-width: 480px) {
+    padding: 0 10px;
+  }
+
   &__menu {
-    padding: 35px 0;
     display: flex;
     column-gap: 40px;
     width: 340px;
-    height: 20px;
+    height: 21px;
 
     .cart-wrapper {
       display: flex;
@@ -78,6 +90,26 @@ main {
   }
 }
 
+.hamburger {
+  border: 0;
+  height: 40px;
+  width: 40px;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background-color: white;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+  position: absolute;
+  top: 50%;
+  right: 25px;
+  transform: translateY(-50%);
+  display: none;
+
+  &:hover {
+    background-color: rgb(205, 203, 210);
+  }
+}
+
 .footer {
   position: absolute;
   left: 0;
@@ -86,87 +118,58 @@ main {
   height: 90px;
   display: flex;
   justify-content: space-between;
-  padding: 0 130px;
+  align-items: center;
+  padding: 0 209.5px 0 130px;
   background-color: $footer;
 
+  @media (max-width: 768px) {
+    padding: 0 20px;
+  }
+
   &__menu {
-    padding: 35px 0;
     display: flex;
     column-gap: 40px;
   }
 }
 
-/* Адаптивные стили */
-@media (max-width: 1200px) {
-  .navigation {
-    padding: 0 50px;
-    &__menu {
-      width: auto;
-      column-gap: 20px;
-    }
+@media screen and (max-width: 560px) {
+  .hamburger {
+    display: block;
   }
-  .footer {
-    padding: 0 50px;
-  }
-}
 
-@media (max-width: 768px) {
   .navigation {
-    flex-direction: column;
-    align-items: center;
-    height: auto;
-    padding: 20px 20px;
-
     &__menu {
       flex-direction: column;
-      align-items: center;
-      padding: 10px 0;
-      column-gap: 0;
-      row-gap: 20px;
-    }
-  }
-  .footer {
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-  }
-}
-
-@media (max-width: 480px) {
-  .layout {
-    h3 {
-      font-size: 24px;
-    }
-
-    li {
-      a {
-        font-size: 12px;
-      }
-    }
-  }
-
-  .navigation {
-    &__menu {
+      position: absolute;
+      z-index: 2;
+      top: 90px;
+      left: 0;
       width: 100%;
+      height: calc(100vh - 60px);
+      background-color: $purple;
+
+      border-top: 1px solid black;
+      display: none;
+
       li {
-        a {
-          text-align: center;
-          display: block;
-          width: 100%;
+        text-align: center;
+        padding: 20px 0;
+        &:hover {
+          background-color: #eee;
+
+          a {
+            color: $purple;
+          }
         }
+      }
+
+      .cart-wrapper {
+        display: flex;
+        justify-content: center;
       }
     }
   }
-  .footer {
-    h3 {
-      font-size: 24px;
-    }
-    &__menu {
-      li {
-        a {
-          font-size: 12px;
-        }
-      }
-    }
+  .navigation-menu.expanded ul {
+    display: block;
   }
 }
