@@ -39,7 +39,7 @@ main {
   justify-content: space-between;
   align-items: center;
   height: 90px;
-  padding: 0 130px;
+  padding: 0 209.5px 0 130px;
   background-color: $purple;
 
   @media (max-width: 1200px) {
@@ -58,7 +58,7 @@ main {
     display: flex;
     column-gap: 40px;
     width: 340px;
-    height: 20px;
+    height: 21px;
 
     .cart-wrapper {
       display: flex;
@@ -119,7 +119,7 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 130px;
+  padding: 0 209.5px 0 130px;
   background-color: $footer;
 
   @media (max-width: 768px) {

@@ -159,15 +159,18 @@ export const ProductPage: React.FC = () => {
           <p className='delivery-date'>1 month warranty</p>
           <p className='delivery-date'>Ships in 1 month</p>
           <div className='order--block'>
-            <div className='order--block__price'>
-              <h3>$7.17</h3>
-              <p>$9.99</p>
+            <div className='order--block__left'>
+              <div className='order--block__left--price'>
+                <h3>$7.17</h3>
+                <p>$9.99</p>
+              </div>
+              <div className='order--block__left--discount'>
+                <p>
+                  Your discount: <strong>14.5%</strong>
+                </p>
+              </div>
             </div>
-            <div className='order--block__discount'>
-              <p>
-                Your discount: <strong>14.5%</strong>
-              </p>
-            </div>
+
             <div className='order--block__button'>
               {cartItems[product.id] ? (
                 <div className='cart-controls' onClick={(e) => e.preventDefault()}>

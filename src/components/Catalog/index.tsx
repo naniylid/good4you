@@ -5,7 +5,6 @@ import './Catalog.module.scss';
 import { catalogData } from './data';
 import { useCart } from '../../context/CartContext';
 import image from './image.svg';
-import { Skeleton } from './Skeleton';
 
 export const Catalog: React.FC = () => {
   const { cartItems, addToCart, increaseItem, decreaseItem } = useCart();
@@ -134,7 +133,7 @@ export const Catalog: React.FC = () => {
             </Link>
           </li>
         ))}
-        <Skeleton />
+        {/* <Skeleton /> */}
       </ul>
       {itemsToShow < totalItems && (
         <div className='show-more'>
