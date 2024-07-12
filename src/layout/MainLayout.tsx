@@ -1,12 +1,12 @@
 import React from 'react';
 import { Outlet, Link, NavLink } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectCart } from '../pages/Cart/redux/selectors';
 import './MainLayout.module.scss';
-import { useCart } from '../context/CartContext';
 
 const MainLayout: React.FC = () => {
-  const { totalCount } = useCart();
-
   const [isNavExpanded, setIsNavExpanded] = React.useState(false);
+  const { totalQuantity } = useSelector(selectCart);
 
   return (
     <div className='wrapper'>
@@ -46,7 +46,7 @@ const MainLayout: React.FC = () => {
             <li>
               <Link className='cart-wrapper' to='/cart' aria-label='Add to cart'>
                 <div className='cart-wrapper__title'>Cart</div>
-                <div className='cart-wrapper__item'>
+                <div className='cart-wrapper__item' aria-label='Cart image with counter'>
                   <svg
                     aria-hidden='true'
                     width='20'
@@ -60,9 +60,12 @@ const MainLayout: React.FC = () => {
                       fill='white'
                     />
                   </svg>
-                  <p aria-label='Counter' className='count'>
-                    {totalCount}
-                  </p>
+
+                  {totalQuantity > 0 ? (
+                    <p aria-label='Counter' className='count'>
+                      {totalQuantity}
+                    </p>
+                  ) : null}
                 </div>
               </Link>
             </li>
