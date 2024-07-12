@@ -1,8 +1,10 @@
 import React from 'react';
 import { Outlet, Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectCart } from '../pages/Cart/redux/selectors';
+
 import './MainLayout.module.scss';
+
+import { selectCart } from '../pages/Cart/redux/selectors';
 
 const MainLayout: React.FC = () => {
   const [isNavExpanded, setIsNavExpanded] = React.useState(false);

@@ -2,26 +2,31 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './Catalog.module.scss';
+
 import { Search } from '../Search';
 import { Skeleton } from './Skeleton';
+
 import { useAppDispatch } from '../../redux/store';
 import { selectSearchSlice } from '../Search/slice';
 import { selectApiSlice } from '../../redux/api/selectors';
 import { fetchProducts } from '../../redux/api/slice';
 import { addProduct, minusItem } from '../../pages/Cart/redux/slice';
+import { createCartItem } from '../../pages/Cart/addToCart';
 import { selectCart } from '../../pages/Cart/redux/selectors';
-import { CartItem } from '../../pages/Cart/redux/types';
+import { Product } from '../../redux/api/types';
+import { selectLimit, setLimit } from './slice';
 
 export const Catalog: React.FC = () => {
   const dispatch = useAppDispatch();
   const isSearch = React.useRef(false);
+
   const { searchValue } = useSelector(selectSearchSlice);
   const { items, status } = useSelector(selectApiSlice);
   const { items: cartItems } = useSelector(selectCart);
-  const [limit, setLimit] = React.useState(12);
+  const { limit } = useSelector(selectLimit);
 
   const handleShowMore = () => {
-    setLimit((prevLimit) => prevLimit + 12);
+    dispatch(setLimit(limit + 12));
   };
 
   const getProducts = async () => {
@@ -37,8 +42,11 @@ export const Catalog: React.FC = () => {
     isSearch.current = false;
   }, [searchValue, limit]);
 
-  const onClickAdd = (item: CartItem) => {
-    dispatch(addProduct(item));
+  const onClickAdd = (product: Product) => {
+    const newCartItem = createCartItem(product, cartItems);
+    if (newCartItem) {
+      dispatch(addProduct(newCartItem));
+    }
   };
 
   const onClickMinus = (id: number) => {
@@ -50,8 +58,8 @@ export const Catalog: React.FC = () => {
   };
 
   return (
-    <section id='catalog' className='catalog' aria-labelledby='catalog-heading'>
-      <h2 id='catalog-heading'>Catalog</h2>
+    <section id='catalog' className='catalog'>
+      <h2>Catalog</h2>
       <Search />
       {status === 'error' ? (
         <div>

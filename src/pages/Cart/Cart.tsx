@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import './Cart.module.scss';
+
 import { useDispatch, useSelector } from 'react-redux';
+
+import './Cart.module.scss';
+
 import {
   addProduct,
   minusItem,
@@ -20,7 +23,7 @@ export const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
   const { data: items, isLoading } = useFetchUserCartQuery(5);
-  const { items: product } = useSelector(selectApiSlice);
+  const { items: products } = useSelector(selectApiSlice);
 
   useEffect(() => {
     if (items) {
@@ -52,6 +55,10 @@ export const Cart: React.FC = () => {
     return cart.items.some((item) => item.id === itemId);
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <Helmet>
@@ -60,9 +67,7 @@ export const Cart: React.FC = () => {
       <section className='cart'>
         <h2>My cart</h2>
 
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : cart.items.length === 0 ? (
+        {cart.items.length === 0 && cart.removedItems.length === 0 ? (
           <div className='cart__empty'>
             <p>No items</p>
           </div>
@@ -107,7 +112,7 @@ export const Cart: React.FC = () => {
                           </p>
                           <button
                             aria-label='Add to cart'
-                            disabled={product.some((product) => item.count >= product.stock)}
+                            disabled={products.some((product) => item.count >= product.stock)}
                             onClick={() => onClickAdd(item)}
                           >
                             <svg

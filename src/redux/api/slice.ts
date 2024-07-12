@@ -7,13 +7,10 @@ export const fetchProducts = createAsyncThunk<Product[], SearchParams>(
   'product/fetchProductsStatus',
   async (params) => {
     const { search, q, limit } = params;
-
     let url = 'https://dummyjson.com/products';
-
     if (q) {
       url += `/${search}`;
     }
-
     const { data } = await axios.get<ProductsResponse>(url, {
       params: pickBy(
         {

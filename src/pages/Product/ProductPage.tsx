@@ -1,81 +1,43 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Swiper as SwiperClass } from 'swiper';
 import { FreeMode, Thumbs } from 'swiper/modules';
 import { Rating } from 'react-simple-star-rating';
+
 import './ProductPage.module.scss';
 import 'swiper/css';
 import 'swiper/css/free-mode';
 import 'swiper/css/thumbs';
-import { useDispatch, useSelector } from 'react-redux';
-import { addProduct, minusItem } from '../Cart/redux/slice';
-import { CartItem } from '../Cart/redux/types';
-import { selectCart } from '../Cart/redux/selectors';
+
 import NotFound from '../NotFound';
+import { addProduct, minusItem } from '../Cart/redux/slice';
+import { createCartItem } from '../Cart/addToCart';
+import { selectCart } from '../Cart/redux/selectors';
 import { useGetProductByIdQuery } from './getProductApi';
+import { EmptyStar, FillStar } from './ratingStar';
+import { Product } from '../../redux/api/types';
 
 export const ProductPage: React.FC = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { data: product, error, isLoading } = useGetProductByIdQuery(id);
   const { items } = useSelector(selectCart);
-  const [modalOpen, setModalOpen] = React.useState(false);
   const [thumbsSwiper, setThumbsSwiper] = React.useState<SwiperClass | null>(null);
-
-  const openModal = () => setModalOpen(true);
-  const closeModal = () => setModalOpen(false);
-
-  const EmptyStar = () => (
-    <svg
-      aria-hidden='true'
-      width='16'
-      height='15'
-      viewBox='0 0 16 15'
-      fill='#D5D5D5'
-      xmlns='http://www.w3.org/2000/svg'
-    >
-      <path d='M7.04894 0.92705C7.3483 0.00573921 8.6517 0.00573969 8.95106 0.92705L10.0206 4.21885C10.1545 4.63087 10.5385 4.90983 10.9717 4.90983H14.4329C15.4016 4.90983 15.8044 6.14945 15.0207 6.71885L12.2205 8.75329C11.87 9.00793 11.7234 9.4593 11.8572 9.87132L12.9268 13.1631C13.2261 14.0844 12.1717 14.8506 11.388 14.2812L8.58778 12.2467C8.2373 11.9921 7.7627 11.9921 7.41221 12.2467L4.61204 14.2812C3.82833 14.8506 2.77385 14.0844 3.0732 13.1631L4.14277 9.87132C4.27665 9.4593 4.12999 9.00793 3.7795 8.75329L0.979333 6.71885C0.195619 6.14945 0.598395 4.90983 1.56712 4.90983H5.02832C5.46154 4.90983 5.8455 4.63087 5.97937 4.21885L7.04894 0.92705Z' />
-    </svg>
-  );
-
-  const FillStar = () => (
-    <svg
-      aria-hidden='true'
-      width='16'
-      height='15'
-      viewBox='0 0 16 15'
-      fill='#F14F4F'
-      xmlns='http://www.w3.org/2000/svg'
-    >
-      <path d='M7.04894 0.92705C7.3483 0.00573921 8.6517 0.00573969 8.95106 0.92705L10.0206 4.21885C10.1545 4.63087 10.5385 4.90983 10.9717 4.90983H14.4329C15.4016 4.90983 15.8044 6.14945 15.0207 6.71885L12.2205 8.75329C11.87 9.00793 11.7234 9.4593 11.8572 9.87132L12.9268 13.1631C13.2261 14.0844 12.1717 14.8506 11.388 14.2812L8.58778 12.2467C8.2373 11.9921 7.7627 11.9921 7.41221 12.2467L4.61204 14.2812C3.82833 14.8506 2.77385 14.0844 3.0732 13.1631L4.14277 9.87132C4.27665 9.4593 4.12999 9.00793 3.7795 8.75329L0.979333 6.71885C0.195619 6.14945 0.598395 4.90983 1.56712 4.90983H5.02832C5.46154 4.90983 5.8455 4.63087 5.97937 4.21885L7.04894 0.92705Z' />
-    </svg>
-  );
-
-  const handleAddToCart = (productId: number) => {
-    if (product) {
-      const cartItem = items.find((item) => item.id === productId);
-      const itemCount = cartItem ? cartItem.count : 0;
-
-      if (itemCount < product.stock) {
-        const newCartItem: CartItem = {
-          id: product.id,
-          title: product.title,
-          price: product.price,
-          count: itemCount + 1,
-          discountPercentage: product.discountPercentage,
-          thumbnail: product.thumbnail,
-        };
-        dispatch(addProduct(newCartItem));
-      }
-    }
-  };
 
   const decreaseItem = (productId: number) => {
     const cartItem = items.find((item) => item.id === productId);
     if (cartItem && cartItem.count > 0) {
       dispatch(minusItem(productId));
+    }
+  };
+
+  const onClickAdd = (product: Product) => {
+    const newCartItem = createCartItem(product, items);
+    if (newCartItem) {
+      dispatch(addProduct(newCartItem));
     }
   };
 
@@ -96,7 +58,12 @@ export const ProductPage: React.FC = () => {
         <section className='product-block'>
           <div className='product-block__photos' aria-label='Image Gallery'>
             {product.images.length < 2 ? (
-              <img className='one-image' src={product.images[0]} alt={product.title} />
+              <img
+                className='one-image'
+                src={product.images[0]}
+                alt={product.title}
+                loading='lazy'
+              />
             ) : (
               <div className='gallerySliderWrapper'>
                 <Swiper
@@ -121,21 +88,12 @@ export const ProductPage: React.FC = () => {
                   className='mySwiper'
                 >
                   {product.images.map((image, index) => (
-                    <SwiperSlide key={index}>
-                      <img
-                        src={image}
-                        alt={`Slider image ${index + 1}`}
-                        onClick={openModal}
-                        loading='lazy'
-                      />
-                      {modalOpen && (
-                        <div className='modal-overlay' onClick={closeModal}>
-                          <div className='modal-content'>
-                            <img src={image} alt='Modal Image' className='modal-image' />
-                          </div>
-                        </div>
-                      )}
-                    </SwiperSlide>
+                    <>
+                      {' '}
+                      <SwiperSlide key={index}>
+                        <img src={image} alt={`Slider image ${index + 1}`} loading='lazy' />
+                      </SwiperSlide>
+                    </>
                   ))}
                 </Swiper>
               </div>
@@ -175,7 +133,7 @@ export const ProductPage: React.FC = () => {
                 </div>
               </div>
               <div className='order--block__button'>
-                {items.find((item) => item.id === product.id && item.count > 0) ? (
+                {itemCount > 0 ? (
                   <div className='cart-controls'>
                     <button aria-label='Decrease' onClick={() => decreaseItem(product.id)}>
                       <svg
@@ -193,15 +151,12 @@ export const ProductPage: React.FC = () => {
                       </svg>
                     </button>
                     <p>
-                      {' '}
                       {itemCount} {itemCount === 1 ? 'item' : 'items'}
                     </p>
                     <button
                       aria-label='Increase'
-                      disabled={items.some(
-                        (item) => item.id === product.id && item.count >= product.stock,
-                      )}
-                      onClick={() => handleAddToCart(product.id)}
+                      disabled={itemCount >= product.stock}
+                      onClick={() => onClickAdd(product)}
                     >
                       <svg
                         aria-hidden='true'
@@ -226,7 +181,7 @@ export const ProductPage: React.FC = () => {
                   <button
                     aria-label='Add to cart'
                     onClick={() => {
-                      handleAddToCart(product.id);
+                      onClickAdd(product);
                     }}
                   >
                     Add to cart

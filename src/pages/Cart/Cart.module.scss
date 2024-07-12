@@ -35,6 +35,7 @@
         min-width: 776px;
         height: 80%;
         min-height: 566px;
+        overflow: auto;
 
         @media (max-width: 850px) {
           min-width: 500px;
