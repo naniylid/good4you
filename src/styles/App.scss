@@ -32,33 +32,6 @@ h2 {
   color: #444b58;
 }
 
-button {
-  cursor: pointer;
-  border: none;
-  background: $button;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-  -ms-flex-pack: center;
-  justify-content: center;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-
-  &:hover {
-    background-color: $button-hover;
-  }
-
-  &:disabled {
-    background-color: $button-disabled;
-    cursor: not-allowed;
-  }
-}
-
 .not-found {
   min-height: 100vh;
   flex: 1;

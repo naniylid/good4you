@@ -5,7 +5,7 @@ export type CartItem = {
   discountPercentage: number;
   thumbnail: string;
   count: number;
-  stock: number;
+  stock?: number;
 };
 
 export interface CartSliceState {

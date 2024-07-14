@@ -201,14 +201,16 @@
       }
 
       .cart-controls {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         width: 254px;
 
         button {
           width: 70px;
           height: 62;
+
+          svg {
+            width: 30px;
+            height: 30px;
+          }
         }
       }
 

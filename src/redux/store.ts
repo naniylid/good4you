@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import apiSlice from './api/slice';
 import catalogSlice from '../components/Catalog/slice';
 import cartSlice from '../pages/Cart/redux/slice';
-import searchSlice from '../components/Search/slice';
+import searchSlice from '../components/atoms/Search/slice';
 import { cartApi } from '../pages/Cart/redux/cartApi';
 import { productApi } from '../pages/Product/getProductApi';
 

@@ -1,6 +1,8 @@
+@import '../../components/molecules/CartItem/CartItem.module.scss';
+
 .cart {
   width: 100%;
-  max-width: 1180px;
+
   min-height: 100vh;
   padding: 48px 130px;
 
@@ -9,9 +11,11 @@
   }
 
   &__empty {
-    margin-top: 48px;
+    width: 100%;
     display: flex;
     justify-content: center;
+    margin-top: 48px;
+
     p {
       font-weight: 600;
       font-size: 24px;
@@ -39,95 +43,6 @@
 
         @media (max-width: 850px) {
           min-width: 500px;
-        }
-
-        li {
-          display: flex;
-          align-items: center;
-          border-radius: 4px;
-          margin-bottom: 10px;
-          padding: 12px;
-
-          &:hover {
-            background: #f6f6f6;
-            cursor: pointer;
-          }
-
-          img {
-            border-radius: 4px;
-            width: 100px;
-            height: 100px;
-          }
-
-          .info {
-            width: 252px;
-            margin-left: 10px;
-
-            a {
-              font-weight: 600;
-              font-size: 16px;
-              line-height: 137%;
-              color: #444b58;
-              &:hover {
-                text-decoration: underline;
-                text-decoration-skip-ink: none;
-              }
-            }
-
-            p {
-              margin-top: 2px;
-              font-weight: 400;
-              font-size: 18px;
-              line-height: 144%;
-              color: #444b58;
-            }
-          }
-
-          .add-item {
-            margin-left: 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 188px;
-
-            button {
-              border-radius: 4px;
-              width: 50px;
-              height: 50px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            }
-
-            p {
-              font-weight: 400;
-              font-size: 14px;
-              line-height: 140%;
-              text-align: center;
-              color: #444b58;
-            }
-          }
-
-          .delete {
-            margin-left: 48px;
-
-            button {
-              border: none;
-              background-color: transparent;
-              font-weight: 400;
-              font-size: 14px;
-              line-height: 143%;
-              text-align: right;
-              color: #b2b5bb;
-
-              &:hover {
-                text-decoration: underline;
-                text-decoration-skip-ink: none;
-                text-align: right;
-                color: #444b58;
-              }
-            }
-          }
         }
 
         .deleted {
