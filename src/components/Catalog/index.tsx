@@ -41,7 +41,7 @@ export const Catalog: React.FC = () => {
 
   return (
     <section id='catalog' className='catalog'>
-      <h2>Catalog</h2>
+      <h1>Catalog</h1>
       <Search />
       {status === 'error' ? (
         <div>

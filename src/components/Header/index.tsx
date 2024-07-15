@@ -8,7 +8,7 @@ export const Header: React.FC = () => {
       <div className='header--wrapper'>
         <div className='header--wrapper__background'>Goods4you</div>
         <div className='header--wrapper__content'>
-          <h1>
+          <h1 className='title'>
             Any products from famous brands <br /> with worldwide delivery
           </h1>
           <p>

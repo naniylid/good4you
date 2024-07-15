@@ -47,7 +47,7 @@ export const Cart: React.FC = () => {
         <title>My cart | Goods4you</title>
       </Helmet>
       <section className='cart'>
-        <h2>My cart</h2>
+        <h1>My cart</h1>
 
         {cart.items.length === 0 && cart.removedItems.length === 0 ? (
           <div className='cart__empty'>

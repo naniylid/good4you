@@ -22,7 +22,7 @@ export const Accordion: React.FC<AccordionProp> = ({ question, answer }) => {
     <div className='faq-block__item'>
       <div className={`question ${open ? 'open' : ''}`} onClick={toggleOpen}>
         <h4>{question}</h4>
-        <button type='button' aria-expanded={open ? 'true' : 'false'}>
+        <button type='button' aria-label='Open answer' aria-expanded={open ? 'true' : 'false'}>
           {' '}
           <svg
             aria-hidden='true'
