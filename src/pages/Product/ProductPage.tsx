@@ -101,7 +101,7 @@ export const ProductPage: React.FC = () => {
             )}
           </div>
           <div className='product-block__info'>
-            <h2>{product.title}</h2>
+            <h1>{product.title}</h1>
             <div className='product-block__info--wrapper'>
               <div className='rating'>
                 <Rating

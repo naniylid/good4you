@@ -3,8 +3,8 @@ import React from 'react';
 const NotFound: React.FC = () => {
   return (
     <div className='not-found'>
-      <h1>Ничего не найдено</h1>
-      <p>К сожалению, данная страница недоступна </p>
+      <h1>404 Not Found</h1>
+      <p>Sorry, this page is not available </p>
     </div>
   );
 };
