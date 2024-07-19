@@ -23,7 +23,7 @@ const mockItem: CartItemProp = {
     title: 'Essence Mascara Lash Princess',
     thumbnail: image,
     price: 100,
-    count: 1,
+    quantity: 1,
     discountPercentage: 10,
   },
 };

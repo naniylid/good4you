@@ -1,33 +1,41 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-
 import { useDispatch, useSelector } from 'react-redux';
 
 import './Cart.module.scss';
 
 import { restoreProduct, setCartItems, setRemovedItems } from './redux/slice';
 import { selectCart } from './redux/selectors';
+import { useFetchUserCartQuery, useUpdateCartMutation } from './redux/cartApi';
 
-import { useFetchUserCartQuery } from './redux/cartApi';
 import { Button } from '../../components/atoms/Button';
 import { LinkTitle } from '../../components/atoms/Link/Link';
 import { CartList } from '../../components/molecules/CartItem/CartItem';
+import { selectUserId } from '../Login/slice';
 
 export const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
-  const { data: items, isLoading } = useFetchUserCartQuery(5);
+  const userId = useSelector(selectUserId);
+
+  const { data: items = [], isLoading } = useFetchUserCartQuery(userId || -1, {
+    skip: userId === undefined,
+  });
+  const [updateCart] = useUpdateCartMutation();
 
   useEffect(() => {
-    if (items) {
-      dispatch(setCartItems(items));
+    if (Array.isArray(items)) {
+      if (JSON.stringify(items) !== JSON.stringify(cart.items)) {
+        dispatch(setCartItems(items));
+      }
+
+      const storedRemovedItems = JSON.parse(localStorage.getItem('removedItems') || '[]');
+      if (JSON.stringify(storedRemovedItems) !== JSON.stringify(cart.removedItems)) {
+        dispatch(setRemovedItems(storedRemovedItems));
+      }
     }
-    const storedRemovedItems = JSON.parse(localStorage.getItem('removedItems') || '[]');
-    if (storedRemovedItems) {
-      dispatch(setRemovedItems(storedRemovedItems));
-    }
-  }, [items, dispatch]);
+  }, [items, dispatch, cart.items, cart.removedItems]);
 
   const handleAddBack = (id: number) => {
     dispatch(restoreProduct(id));
@@ -41,15 +49,18 @@ export const Cart: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+  // Ensure cart.items is an array before calling map
+  const cartItems = Array.isArray(cart.items) ? cart.items : [];
+
   return (
     <>
       <Helmet>
         <title>My cart | Goods4you</title>
       </Helmet>
       <section className='cart'>
-        <h2>My cart</h2>
+        <h1>My cart</h1>
 
-        {cart.items.length === 0 && cart.removedItems.length === 0 ? (
+        {cartItems.length === 0 && cart.removedItems.length === 0 ? (
           <div className='cart__empty'>
             <p>No items</p>
           </div>
@@ -57,7 +68,13 @@ export const Cart: React.FC = () => {
           <div className='cart--block'>
             <div className='cart--block__left'>
               <ul>
-                {cart.items.map((item) => item && item.count > 0 && <CartList item={item} />)}
+                {cartItems.map(
+                  (item) =>
+                    item &&
+                    item.quantity > 0 && (
+                      <CartList key={item.id} item={item} userId={userId} updateCart={updateCart} />
+                    ),
+                )}
                 {cart.removedItems.map(
                   (item) =>
                     !isInCart(item.id) && (

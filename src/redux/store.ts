@@ -6,6 +6,8 @@ import cartSlice from '../pages/Cart/redux/slice';
 import searchSlice from '../components/atoms/Search/slice';
 import { cartApi } from '../pages/Cart/redux/cartApi';
 import { productApi } from '../pages/Product/getProductApi';
+import authSlice from '../pages/Login/slice';
+import { authApi } from '../pages/Login/apiLogin';
 
 export const store = configureStore({
   reducer: {
@@ -13,11 +15,13 @@ export const store = configureStore({
     catalogSlice,
     cartSlice,
     searchSlice,
+    auth: authSlice,
     [cartApi.reducerPath]: cartApi.reducer,
     [productApi.reducerPath]: productApi.reducer,
+    [authApi.reducerPath]: authApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(productApi.middleware, cartApi.middleware),
+    getDefaultMiddleware().concat(productApi.middleware, cartApi.middleware, authApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

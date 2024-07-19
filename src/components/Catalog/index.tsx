@@ -41,11 +41,11 @@ export const Catalog: React.FC = () => {
 
   return (
     <section id='catalog' className='catalog'>
-      <h2>Catalog</h2>
+      <h1>Catalog</h1>
       <Search />
       {status === 'error' ? (
         <div>
-          <h2>Ошибка загрузки. Попробуйте повторить попытку позже </h2>
+          <h2>Loading error. Please try again later</h2>
         </div>
       ) : (
         <ul className='catalog__list' role='list'>

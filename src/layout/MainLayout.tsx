@@ -5,10 +5,15 @@ import { useSelector } from 'react-redux';
 import './MainLayout.module.scss';
 
 import { selectCart } from '../pages/Cart/redux/selectors';
+import { selectUserLastName, selectUserName } from '../pages/Login/slice';
+import { Login } from '../pages/Login/Login';
 
 const MainLayout: React.FC = () => {
   const [isNavExpanded, setIsNavExpanded] = React.useState(false);
   const { totalQuantity } = useSelector(selectCart);
+
+  const userName = useSelector(selectUserName);
+  const userLastName = useSelector(selectUserLastName);
 
   return (
     <div className='wrapper'>
@@ -72,14 +77,20 @@ const MainLayout: React.FC = () => {
               </Link>
             </li>
             <li>
-              <Link to=''>Johnson Smith</Link>{' '}
+              <Link to='/login'>
+                {userName ? (
+                  <>
+                    {userName} {userLastName}
+                  </>
+                ) : (
+                  'Log in'
+                )}
+              </Link>
             </li>
           </ul>
         </div>
       </nav>
-      <main>
-        <Outlet />
-      </main>
+      <main>{userName ? <Outlet /> : <Login />}</main>
       <footer className='footer layout' aria-label='Breadcrumb'>
         <NavLink to='/' aria-current='page'>
           <h3 className='footer__logo'>Goods4you</h3>
