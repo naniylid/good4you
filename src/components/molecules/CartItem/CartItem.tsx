@@ -8,17 +8,17 @@ import { ButtonControls } from '../../atoms/Button/ButtonControls';
 import { CartItem } from '../../../pages/Cart/redux/types';
 import { addProduct, minusItem, removeProduct } from '../../../pages/Cart/redux/slice';
 import { selectApiSlice } from '../../../redux/api/selectors';
-import { useAppDispatch } from '../../../redux/store'; // Assuming this is the correct path
+import { useAppDispatch } from '../../../redux/store';
+import { handleAddToCart } from '../../../pages/Cart/addToCart';
 
 export type CartItemProp = {
   item: CartItem;
-  userId?: number; // Добавляем userId как опциональное свойство
-  updateCart?: (args: { userId: number; products: CartItem[] }) => Promise<any>; // Добавляем updateCart как опциональное свойство
+  userId?: number;
 };
 
-export const CartList: React.FC<CartItemProp> = ({ item, userId, updateCart }) => {
+export const CartList: React.FC<CartItemProp> = ({ item, userId }) => {
   const dispatch = useAppDispatch();
-  const { items: products } = useSelector(selectApiSlice);
+  const { items: products } = useSelector(selectApiSlice) || [];
 
   const onClickMinus = (id: number) => {
     dispatch(minusItem(id));
@@ -28,21 +28,9 @@ export const CartList: React.FC<CartItemProp> = ({ item, userId, updateCart }) =
     dispatch(removeProduct(id));
   };
 
-  const handleAddToCart = async (cartItem: CartItem) => {
-    if (updateCart && userId) {
-      try {
-        await updateCart({ userId, products: [cartItem] });
-      } catch (error) {
-        console.error('Failed to update cart:', error);
-      }
-    } else {
-      console.error('User ID or updateCart function is not available');
-    }
-  };
-
   const onClickAdd = (item: CartItem) => {
     dispatch(addProduct(item));
-    handleAddToCart(item);
+    handleAddToCart(item, userId);
   };
 
   return (
@@ -56,7 +44,7 @@ export const CartList: React.FC<CartItemProp> = ({ item, userId, updateCart }) =
       </div>
       <ButtonControls
         itemCount={item.quantity}
-        stock={products.find((product) => product.id === item.id)?.stock || 0}
+        stock={(products && products.find((product) => product.id === item.id)?.stock) || 0}
         onClickMinus={() => onClickMinus(item.id)}
         onClickAdd={() => onClickAdd(item)}
       />

@@ -10,11 +10,9 @@ import { Button } from '../../atoms/Button';
 
 import { useAppDispatch } from '../../../redux/store';
 import { selectCart } from '../../../pages/Cart/redux/selectors';
-import { createCartItem } from '../../../pages/Cart/addToCart';
+import { createCartItem, handleAddToCart } from '../../../pages/Cart/addToCart';
 import { addProduct, minusItem } from '../../../pages/Cart/redux/slice';
-import { useUpdateCartMutation } from '../../../pages/Cart/redux/cartApi';
-import { selectUserId } from '../../../pages/Login/slice'; // Import selector for userId
-import { CartItem } from '../../../pages/Cart/redux/types';
+import { selectUserId } from '../../../pages/Login/slice';
 
 export type CardProp = {
   item: Product;
@@ -22,32 +20,21 @@ export type CardProp = {
 
 export const Card: React.FC<CardProp> = ({ item }) => {
   const dispatch = useAppDispatch();
-  const { items: cartItems = [] } = useSelector(selectCart);
+  const { items: cartItems = [] } = useSelector(selectCart) || { items: [] };
   const userId = useSelector(selectUserId);
-
-  const [updateCart] = useUpdateCartMutation();
-
-  const handleAddToCart = async (cartItem: CartItem) => {
-    try {
-      if (userId) {
-        await updateCart({ userId, products: [cartItem] }).unwrap();
-      } else {
-        console.error('User ID is not available');
-      }
-    } catch (error) {
-      console.error('Failed to update cart:', error);
-    }
-  };
 
   const onClickAdd = () => {
     const cartItem = createCartItem(item, cartItems);
 
     if (cartItem) {
       dispatch(addProduct(cartItem));
-      handleAddToCart({
-        ...cartItem,
-        quantity: (cartItem.quantity ?? 1) + 1,
-      });
+      handleAddToCart(
+        {
+          ...cartItem,
+          quantity: (cartItem.quantity ?? 1) + 1,
+        },
+        userId,
+      );
     }
   };
 
@@ -55,10 +42,13 @@ export const Card: React.FC<CardProp> = ({ item }) => {
     const cartItem = findCartItem(item.id);
     if (cartItem) {
       dispatch(minusItem(item.id));
-      handleAddToCart({
-        ...cartItem,
-        quantity: (cartItem.quantity ?? 1) - 1,
-      });
+      handleAddToCart(
+        {
+          ...cartItem,
+          quantity: (cartItem.quantity ?? 1) - 1,
+        },
+        userId,
+      );
     }
   };
 

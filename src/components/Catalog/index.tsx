@@ -55,10 +55,10 @@ export const Catalog: React.FC = () => {
                   <Skeleton />
                 </li>
               ))
-            : items.map((item) => <Card key={item.id} item={item} />)}
+            : items && items.map((item) => <Card key={item.id} item={item} />)}
         </ul>
       )}
-      {items.length >= limit && (
+      {items && items.length >= limit && (
         <div className='show-more'>
           <button onClick={handleShowMore}>Show more</button>
         </div>

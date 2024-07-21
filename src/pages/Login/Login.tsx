@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from './apiLogin';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAuth, setUsername, setPassword, setValid } from './slice';
+import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { SerializedError } from '@reduxjs/toolkit';
 
 export const Login: React.FC = () => {
   const dispatch = useDispatch();
@@ -43,6 +45,16 @@ export const Login: React.FC = () => {
     dispatch(setValid(Boolean(username && password)));
   };
 
+  const getErrorMessage = (error: FetchBaseQueryError | SerializedError | undefined) => {
+    if (error && 'data' in error) {
+      return (error.data as { message?: string }).message || 'An error occurred';
+    }
+    if (error && 'message' in error) {
+      return error.message;
+    }
+    return null;
+  };
+
   return (
     <>
       <Helmet>
@@ -63,6 +75,7 @@ export const Login: React.FC = () => {
               aria-required='true'
               aria-invalid={!username && !isValid}
               aria-describedby='usernameAlert'
+              autoComplete='username'
             />
           </label>
           {!isValid && !username && (
@@ -82,6 +95,7 @@ export const Login: React.FC = () => {
               aria-required='true'
               aria-invalid={!password && !isValid}
               aria-describedby='passwordAlert'
+              autoComplete='current-password'
             />
           </label>
           {!isValid && !password && (
@@ -100,7 +114,7 @@ export const Login: React.FC = () => {
           </button>
           {error && (
             <div role='alert' className='form__alert'>
-              {error.message}
+              {getErrorMessage(error)}
             </div>
           )}
         </form>

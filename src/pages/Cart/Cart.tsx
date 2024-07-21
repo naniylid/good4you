@@ -7,7 +7,7 @@ import './Cart.module.scss';
 
 import { restoreProduct, setCartItems, setRemovedItems } from './redux/slice';
 import { selectCart } from './redux/selectors';
-import { useFetchUserCartQuery, useUpdateCartMutation } from './redux/cartApi';
+import { useFetchUserCartQuery } from './redux/cartApi';
 
 import { Button } from '../../components/atoms/Button';
 import { LinkTitle } from '../../components/atoms/Link/Link';
@@ -22,7 +22,6 @@ export const Cart: React.FC = () => {
   const { data: items = [], isLoading } = useFetchUserCartQuery(userId || -1, {
     skip: userId === undefined,
   });
-  const [updateCart] = useUpdateCartMutation();
 
   useEffect(() => {
     if (Array.isArray(items)) {
@@ -46,10 +45,9 @@ export const Cart: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className='loading'> Loading...</div>;
   }
 
-  // Ensure cart.items is an array before calling map
   const cartItems = Array.isArray(cart.items) ? cart.items : [];
 
   return (
@@ -71,9 +69,7 @@ export const Cart: React.FC = () => {
                 {cartItems.map(
                   (item) =>
                     item &&
-                    item.quantity > 0 && (
-                      <CartList key={item.id} item={item} userId={userId} updateCart={updateCart} />
-                    ),
+                    item.quantity > 0 && <CartList key={item.id} item={item} userId={userId} />,
                 )}
                 {cart.removedItems.map(
                   (item) =>

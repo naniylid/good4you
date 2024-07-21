@@ -4,11 +4,7 @@ import { useAuth } from './pages/Login/useAuth';
 
 function App() {
   useAuth();
-  return (
-    <>
-      <AppRoutes />
-    </>
-  );
+  return <AppRoutes />;
 }
 
 export default App;
