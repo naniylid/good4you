@@ -4,7 +4,7 @@ export type CartItem = {
   price: number;
   discountPercentage: number;
   thumbnail: string;
-  count: number;
+  quantity: number;
   stock?: number;
 };
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import './CartItem.module.scss';
 
 import { LinkTitle } from '../../atoms/Link/Link';
@@ -8,25 +8,29 @@ import { ButtonControls } from '../../atoms/Button/ButtonControls';
 import { CartItem } from '../../../pages/Cart/redux/types';
 import { addProduct, minusItem, removeProduct } from '../../../pages/Cart/redux/slice';
 import { selectApiSlice } from '../../../redux/api/selectors';
+import { useAppDispatch } from '../../../redux/store';
+import { handleAddToCart } from '../../../pages/Cart/addToCart';
 
 export type CartItemProp = {
   item: CartItem;
+  userId?: number;
 };
 
-export const CartList: React.FC<CartItemProp> = ({ item }) => {
-  const dispatch = useDispatch();
-  const { items: products } = useSelector(selectApiSlice);
+export const CartList: React.FC<CartItemProp> = ({ item, userId }) => {
+  const dispatch = useAppDispatch();
+  const { items: products } = useSelector(selectApiSlice) || [];
 
   const onClickMinus = (id: number) => {
     dispatch(minusItem(id));
   };
 
-  const onClickAdd = (item: CartItem) => {
-    dispatch(addProduct(item));
-  };
-
   const onClickRemove = (id: number) => {
     dispatch(removeProduct(id));
+  };
+
+  const onClickAdd = (item: CartItem) => {
+    dispatch(addProduct(item));
+    handleAddToCart(item, userId);
   };
 
   return (
@@ -39,8 +43,8 @@ export const CartList: React.FC<CartItemProp> = ({ item }) => {
         <p>$ {item.price}</p>
       </div>
       <ButtonControls
-        itemCount={item.count}
-        stock={products.find((product) => product.id === item.id)?.stock || 0}
+        itemCount={item.quantity}
+        stock={(products && products.find((product) => product.id === item.id)?.stock) || 0}
         onClickMinus={() => onClickMinus(item.id)}
         onClickAdd={() => onClickAdd(item)}
       />

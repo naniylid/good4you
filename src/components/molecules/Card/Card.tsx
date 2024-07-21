@@ -10,8 +10,9 @@ import { Button } from '../../atoms/Button';
 
 import { useAppDispatch } from '../../../redux/store';
 import { selectCart } from '../../../pages/Cart/redux/selectors';
-import { createCartItem } from '../../../pages/Cart/addToCart';
+import { createCartItem, handleAddToCart } from '../../../pages/Cart/addToCart';
 import { addProduct, minusItem } from '../../../pages/Cart/redux/slice';
+import { selectUserId } from '../../../pages/Login/slice';
 
 export type CardProp = {
   item: Product;
@@ -19,17 +20,36 @@ export type CardProp = {
 
 export const Card: React.FC<CardProp> = ({ item }) => {
   const dispatch = useAppDispatch();
-  const { items: cartItems } = useSelector(selectCart);
+  const { items: cartItems = [] } = useSelector(selectCart) || { items: [] };
+  const userId = useSelector(selectUserId);
 
-  const onClickAdd = (product: Product) => {
-    const newCartItem = createCartItem(product, cartItems);
-    if (newCartItem) {
-      dispatch(addProduct(newCartItem));
+  const onClickAdd = () => {
+    const cartItem = createCartItem(item, cartItems);
+
+    if (cartItem) {
+      dispatch(addProduct(cartItem));
+      handleAddToCart(
+        {
+          ...cartItem,
+          quantity: (cartItem.quantity ?? 1) + 1,
+        },
+        userId,
+      );
     }
   };
 
-  const onClickMinus = (id: number) => {
-    dispatch(minusItem(id));
+  const onClickMinus = () => {
+    const cartItem = findCartItem(item.id);
+    if (cartItem) {
+      dispatch(minusItem(item.id));
+      handleAddToCart(
+        {
+          ...cartItem,
+          quantity: (cartItem.quantity ?? 1) - 1,
+        },
+        userId,
+      );
+    }
   };
 
   const findCartItem = (id: number) => {
@@ -53,16 +73,16 @@ export const Card: React.FC<CardProp> = ({ item }) => {
             <p>${(item.price - item.discountPercentage / 100).toFixed(2)}</p>
           </div>
           <div className='button' onClick={(e) => e.preventDefault()}>
-            {cartItem && cartItem.count > 0 ? (
+            {cartItem && cartItem.quantity > 0 ? (
               <ButtonControls
-                itemCount={cartItem.count}
+                itemCount={cartItem.quantity}
                 stock={item.stock}
-                onClickAdd={() => onClickAdd(item)}
-                onClickMinus={() => onClickMinus(item.id)}
+                onClickAdd={onClickAdd}
+                onClickMinus={onClickMinus}
               />
             ) : (
               <div>
-                <Button onClickAdd={() => onClickAdd(item)} />
+                <Button onClickAdd={onClickAdd} />
               </div>
             )}
           </div>

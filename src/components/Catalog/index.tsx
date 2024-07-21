@@ -45,7 +45,7 @@ export const Catalog: React.FC = () => {
       <Search />
       {status === 'error' ? (
         <div>
-          <h2>Ошибка загрузки. Попробуйте повторить попытку позже </h2>
+          <h2>Loading error. Please try again later</h2>
         </div>
       ) : (
         <ul className='catalog__list' role='list'>
@@ -55,10 +55,10 @@ export const Catalog: React.FC = () => {
                   <Skeleton />
                 </li>
               ))
-            : items.map((item) => <Card key={item.id} item={item} />)}
+            : items && items.map((item) => <Card key={item.id} item={item} />)}
         </ul>
       )}
-      {items.length >= limit && (
+      {items && items.length >= limit && (
         <div className='show-more'>
           <button onClick={handleShowMore}>Show more</button>
         </div>

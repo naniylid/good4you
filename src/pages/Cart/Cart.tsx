@@ -1,33 +1,40 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-
 import { useDispatch, useSelector } from 'react-redux';
 
 import './Cart.module.scss';
 
 import { restoreProduct, setCartItems, setRemovedItems } from './redux/slice';
 import { selectCart } from './redux/selectors';
-
 import { useFetchUserCartQuery } from './redux/cartApi';
+
 import { Button } from '../../components/atoms/Button';
 import { LinkTitle } from '../../components/atoms/Link/Link';
 import { CartList } from '../../components/molecules/CartItem/CartItem';
+import { selectUserId } from '../Login/slice';
 
 export const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const cart = useSelector(selectCart);
-  const { data: items, isLoading } = useFetchUserCartQuery(5);
+  const userId = useSelector(selectUserId);
+
+  const { data: items = [], isLoading } = useFetchUserCartQuery(userId || -1, {
+    skip: userId === undefined,
+  });
 
   useEffect(() => {
-    if (items) {
-      dispatch(setCartItems(items));
+    if (Array.isArray(items)) {
+      if (JSON.stringify(items) !== JSON.stringify(cart.items)) {
+        dispatch(setCartItems(items));
+      }
+
+      const storedRemovedItems = JSON.parse(localStorage.getItem('removedItems') || '[]');
+      if (JSON.stringify(storedRemovedItems) !== JSON.stringify(cart.removedItems)) {
+        dispatch(setRemovedItems(storedRemovedItems));
+      }
     }
-    const storedRemovedItems = JSON.parse(localStorage.getItem('removedItems') || '[]');
-    if (storedRemovedItems) {
-      dispatch(setRemovedItems(storedRemovedItems));
-    }
-  }, [items, dispatch]);
+  }, [items, dispatch, cart.items, cart.removedItems]);
 
   const handleAddBack = (id: number) => {
     dispatch(restoreProduct(id));
@@ -38,8 +45,10 @@ export const Cart: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className='loading'> Loading...</div>;
   }
+
+  const cartItems = Array.isArray(cart.items) ? cart.items : [];
 
   return (
     <>
@@ -49,7 +58,7 @@ export const Cart: React.FC = () => {
       <section className='cart'>
         <h1>My cart</h1>
 
-        {cart.items.length === 0 && cart.removedItems.length === 0 ? (
+        {cartItems.length === 0 && cart.removedItems.length === 0 ? (
           <div className='cart__empty'>
             <p>No items</p>
           </div>
@@ -57,7 +66,11 @@ export const Cart: React.FC = () => {
           <div className='cart--block'>
             <div className='cart--block__left'>
               <ul>
-                {cart.items.map((item) => item && item.count > 0 && <CartList item={item} />)}
+                {cartItems.map(
+                  (item) =>
+                    item &&
+                    item.quantity > 0 && <CartList key={item.id} item={item} userId={userId} />,
+                )}
                 {cart.removedItems.map(
                   (item) =>
                     !isInCart(item.id) && (

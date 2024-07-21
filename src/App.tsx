@@ -1,12 +1,10 @@
 import './styles/App.scss';
 import AppRoutes from './routes/routes';
+import { useAuth } from './pages/Login/useAuth';
 
 function App() {
-  return (
-    <>
-      <AppRoutes />
-    </>
-  );
+  useAuth();
+  return <AppRoutes />;
 }
 
 export default App;

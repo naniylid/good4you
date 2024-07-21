@@ -2,26 +2,39 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { CartSliceState, CartItem } from './types';
 
 const initialState: CartSliceState = {
-  items: [],
-  removedItems: [],
+  items: [] as CartItem[],
+  removedItems: [] as CartItem[],
   totalQuantity: 0,
   totalPrice: 0,
   discountedTotal: 0,
 };
 
-const calculateDiscountedTotal = (items: CartItem[]) => {
+const calculateDiscountedTotal = (items: CartItem[] = []) => {
+  if (!Array.isArray(items)) {
+    console.error('Expected items to be an array');
+    return 0;
+  }
   return items.reduce(
-    (total, item) => total + item.price * item.count * (1 - item.discountPercentage / 100),
+    (total, item) => total + item.price * item.quantity * (1 - item.discountPercentage / 100),
     0,
   );
 };
 
-const calcTotalPrice = (items: CartItem[]) => {
-  return items.reduce((sum, item) => item.price * item.count + sum, 0);
+const calcTotalPrice = (items: CartItem[] = []) => {
+  if (!Array.isArray(items)) {
+    console.error('Expected items to be an array');
+    return 0;
+  }
+  return items.reduce((sum, item) => item.price * item.quantity + sum, 0);
 };
 
-const calcTotalQuantity = (items: CartItem[]) => {
-  return items.reduce((sum, item) => item.count + sum, 0);
+const calcTotalQuantity = (items: CartItem[] = []) => {
+  if (!Array.isArray(items)) {
+    console.error('Expected items to be an array');
+    return 0;
+  }
+
+  return items.reduce((sum, item) => item.quantity + sum, 0);
 };
 
 const cartSlice = createSlice({
@@ -32,9 +45,9 @@ const cartSlice = createSlice({
       const findItem = state.items.find((obj) => obj.id === action.payload.id);
 
       if (findItem) {
-        findItem.count++;
+        findItem.quantity++;
       } else {
-        state.items.push({ ...action.payload, count: 1 });
+        state.items.push({ ...action.payload, quantity: 1 });
       }
 
       state.totalQuantity = calcTotalQuantity(state.items);
@@ -46,7 +59,7 @@ const cartSlice = createSlice({
       const findItem = state.items.find((obj) => obj.id === action.payload);
 
       if (findItem) {
-        findItem.count--;
+        findItem.quantity--;
       }
 
       state.totalQuantity = calcTotalQuantity(state.items);

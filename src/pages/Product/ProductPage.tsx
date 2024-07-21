@@ -15,22 +15,25 @@ import 'swiper/css/thumbs';
 import NotFound from '../NotFound';
 import { ButtonControls } from '../../components/atoms/Button/ButtonControls';
 import { addProduct, minusItem } from '../Cart/redux/slice';
-import { createCartItem } from '../Cart/addToCart';
+import { createCartItem, handleAddToCart } from '../Cart/addToCart';
 import { selectCart } from '../Cart/redux/selectors';
 import { useGetProductByIdQuery } from './getProductApi';
 import { EmptyStar, FillStar } from './ratingStar';
 import { Product } from '../../redux/api/types';
+import { selectUserId } from '../Login/slice';
 
 export const ProductPage: React.FC = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { data: product, error, isLoading } = useGetProductByIdQuery(id);
   const { items } = useSelector(selectCart);
+  const userId = useSelector(selectUserId);
+
   const [thumbsSwiper, setThumbsSwiper] = React.useState<SwiperClass | null>(null);
 
   const decreaseItem = (productId: number) => {
     const cartItem = items.find((item) => item.id === productId);
-    if (cartItem && cartItem.count > 0) {
+    if (cartItem && cartItem.quantity > 0) {
       dispatch(minusItem(productId));
     }
   };
@@ -39,16 +42,15 @@ export const ProductPage: React.FC = () => {
     const newCartItem = createCartItem(product, items);
     if (newCartItem) {
       dispatch(addProduct(newCartItem));
+      handleAddToCart(newCartItem, userId);
     }
   };
 
   if (isLoading) return <div className='loading'>Loading...</div>;
 
-  if (error) {
-    return <NotFound />;
-  }
+  if (error) return <NotFound />;
 
-  const itemCount = items.find((item) => item.id === product?.id)?.count || 0;
+  const itemCount = items.find((item) => item.id === product?.id)?.quantity || 0;
 
   return (
     <>
@@ -89,12 +91,9 @@ export const ProductPage: React.FC = () => {
                   className='mySwiper'
                 >
                   {product.images.map((image, index) => (
-                    <>
-                      {' '}
-                      <SwiperSlide key={index}>
-                        <img src={image} alt={`Slider image ${index + 1}`} loading='lazy' />
-                      </SwiperSlide>
-                    </>
+                    <SwiperSlide key={index}>
+                      <img src={image} alt={`Slider image ${index + 1}`} loading='lazy' />
+                    </SwiperSlide>
                   ))}
                 </Swiper>
               </div>
@@ -142,12 +141,7 @@ export const ProductPage: React.FC = () => {
                     onClickMinus={() => decreaseItem(product.id)}
                   />
                 ) : (
-                  <button
-                    aria-label='Add to cart'
-                    onClick={() => {
-                      onClickAdd(product);
-                    }}
-                  >
+                  <button aria-label='Add to cart' onClick={() => onClickAdd(product)}>
                     Add to cart
                   </button>
                 )}

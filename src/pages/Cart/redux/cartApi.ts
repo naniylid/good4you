@@ -3,12 +3,22 @@ import { CartItem } from './types';
 
 export const cartApi = createApi({
   reducerPath: 'cartApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://dummyjson.com' }),
   endpoints: (builder) => ({
     fetchUserCart: builder.query<CartItem[], number>({
-      query: (userId) => `cart/${userId}`,
+      query: (userId) => `carts/${userId}`,
+    }),
+    updateCart: builder.mutation<CartItem[], { userId: number; products: CartItem[] }>({
+      query: ({ userId, products }) => ({
+        url: `carts/${userId}`,
+        method: 'PUT',
+        body: {
+          merge: false,
+          products,
+        },
+      }),
     }),
   }),
 });
 
-export const { useFetchUserCartQuery } = cartApi;
+export const { useFetchUserCartQuery, useUpdateCartMutation } = cartApi;
