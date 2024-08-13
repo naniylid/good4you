@@ -7,8 +7,7 @@ interface AuthState {
   user: User | null;
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   error: string | null;
-  username: string;
-  password: string;
+
   isValid: boolean;
 }
 
@@ -17,8 +16,7 @@ const initialState: AuthState = {
   user: null,
   status: 'idle',
   error: null,
-  username: '',
-  password: '',
+
   isValid: true,
 };
 
@@ -37,12 +35,7 @@ const authSlice = createSlice({
     setToken(state, action: PayloadAction<string>) {
       state.token = action.payload;
     },
-    setUsername(state, action: PayloadAction<string>) {
-      state.username = action.payload;
-    },
-    setPassword(state, action: PayloadAction<string>) {
-      state.password = action.payload;
-    },
+
     setValid(state, action: PayloadAction<boolean>) {
       state.isValid = action.payload;
     },
@@ -62,7 +55,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, setUser, setToken, setUsername, setPassword, setValid } = authSlice.actions;
+export const { logout, setUser, setToken, setValid } = authSlice.actions;
 
 export const selectAuth = (state: RootState) => state.auth;
 export const selectUserId = (state: RootState) => state.auth?.user?.id;
