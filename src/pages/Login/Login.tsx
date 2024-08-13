@@ -5,15 +5,23 @@ import './Login.module.scss';
 import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from './apiLogin';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectAuth, setUsername, setPassword, setValid } from './slice';
+import { selectAuth, setValid } from './slice';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { SerializedError } from '@reduxjs/toolkit';
 
+interface LoginForm {
+  username: string;
+  password: string;
+}
+
 export const Login: React.FC = () => {
   const dispatch = useDispatch();
-  const { username, password, isValid } = useSelector(selectAuth);
-
+  const { isValid } = useSelector(selectAuth);
   const [login, { isLoading, error }] = useLoginMutation();
+  const [loginForm, setLoginForm] = React.useState<LoginForm>({
+    username: 'emilys',
+    password: 'emilyspass',
+  });
 
   const navigate = useNavigate();
 
@@ -22,9 +30,9 @@ export const Login: React.FC = () => {
 
     validate();
 
-    if (username && password) {
+    if (loginForm.username && loginForm.password) {
       try {
-        await login({ username, password }).unwrap();
+        await login({ username: loginForm.username, password: loginForm.password }).unwrap();
         navigate('/');
       } catch (error) {
         console.error('Login failed:', error);
@@ -32,17 +40,12 @@ export const Login: React.FC = () => {
     }
   };
 
-  const setText = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    if (name === 'username') {
-      dispatch(setUsername(value));
-    } else if (name === 'password') {
-      dispatch(setPassword(value));
-    }
+  const setText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginForm((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
   const validate = () => {
-    dispatch(setValid(Boolean(username && password)));
+    dispatch(setValid(Boolean(loginForm.username && loginForm.password)));
   };
 
   const getErrorMessage = (error: FetchBaseQueryError | SerializedError | undefined) => {
@@ -68,17 +71,19 @@ export const Login: React.FC = () => {
               type='text'
               name='username'
               id='username'
-              placeholder='Login'
-              className={username || isValid ? 'form__input' : 'form__input form__input--error'}
-              value={username}
+              placeholder='liamg'
+              className={
+                loginForm.username || isValid ? 'form__input' : 'form__input form__input--error'
+              }
+              value={loginForm.username}
               onChange={setText}
               aria-required='true'
-              aria-invalid={!username && !isValid}
+              aria-invalid={!loginForm.username && !isValid}
               aria-describedby='usernameAlert'
               autoComplete='username'
             />
           </label>
-          {!isValid && !username && (
+          {!isValid && !loginForm.username && (
             <div role='alert' aria-atomic='true' id='usernameAlert' className='form__alert'>
               You must enter a username
             </div>
@@ -88,17 +93,19 @@ export const Login: React.FC = () => {
               type='password'
               name='password'
               id='password'
-              placeholder='Password'
-              className={password || isValid ? 'form__input' : 'form__input form__input--error'}
-              value={password}
+              placeholder='liamgpass'
+              className={
+                loginForm.password || isValid ? 'form__input' : 'form__input form__input--error'
+              }
+              value={loginForm.password}
               onChange={setText}
               aria-required='true'
-              aria-invalid={!password && !isValid}
+              aria-invalid={!loginForm.password && !isValid}
               aria-describedby='passwordAlert'
               autoComplete='current-password'
             />
           </label>
-          {!isValid && !password && (
+          {!isValid && !loginForm.password && (
             <div
               aria-live='polite'
               role='alert'
@@ -110,7 +117,60 @@ export const Login: React.FC = () => {
             </div>
           )}
           <button type='submit' className='form__submit' disabled={isLoading}>
-            {isLoading ? 'Signing in...' : 'Sign in'}
+            {isLoading ? (
+              <svg aria-hidden='true' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'>
+                <radialGradient
+                  id='a12'
+                  cx='.66'
+                  fx='.66'
+                  cy='.3125'
+                  fy='.3125'
+                  gradientTransform='scale(1.5)'
+                >
+                  <stop offset='0' stop-color='#FFF8F9'></stop>
+                  <stop offset='.3' stop-color='#FFF8F9' stop-opacity='.9'></stop>
+                  <stop offset='.6' stop-color='#FFF8F9' stop-opacity='.6'></stop>
+                  <stop offset='.8' stop-color='#FFF8F9' stop-opacity='.3'></stop>
+                  <stop offset='1' stop-color='#FFF8F9' stop-opacity='0'></stop>
+                </radialGradient>
+                <circle
+                  transform-origin='center'
+                  fill='none'
+                  stroke='url(#a12)'
+                  stroke-width='15'
+                  stroke-linecap='round'
+                  stroke-dasharray='200 1000'
+                  stroke-dashoffset='0'
+                  cx='100'
+                  cy='100'
+                  r='70'
+                >
+                  <animateTransform
+                    type='rotate'
+                    attributeName='transform'
+                    calcMode='spline'
+                    dur='2'
+                    values='360;0'
+                    keyTimes='0;1'
+                    keySplines='0 0 1 1'
+                    repeatCount='indefinite'
+                  ></animateTransform>
+                </circle>
+                <circle
+                  transform-origin='center'
+                  fill='none'
+                  opacity='.2'
+                  stroke='#FFF8F9'
+                  stroke-width='15'
+                  stroke-linecap='round'
+                  cx='100'
+                  cy='100'
+                  r='70'
+                ></circle>
+              </svg>
+            ) : (
+              'Sign in'
+            )}
           </button>
           {error && (
             <div role='alert' className='form__alert'>
