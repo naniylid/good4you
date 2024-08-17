@@ -1,21 +1,83 @@
 import React from 'react';
+import { ProductCart } from '../../../../redux/services/cartById/types';
+import { cartByUserIdSlice } from '../../../../redux/slices/cartByUserIdSlice';
+import { notificationErrorSlice } from '../../../../redux/slices/notificationError';
+import { useUpdateCartByUserIdMutation } from '../../../../redux/services/cartById/cartById';
+import { useAppDispatch, useAppSelector } from '../../../../hooks/useRedux';
+import { getErrorMsg } from '../../../../utils';
 
 export interface ButtonControlsProps {
-  itemCount: number;
+  product: ProductCart;
+  quantity: number;
   stock: number;
-  onClickAdd: () => void;
-  onClickMinus: () => void;
 }
 
-export const ButtonControls: React.FC<ButtonControlsProps> = ({
-  itemCount,
-  stock,
-  onClickAdd,
-  onClickMinus,
-}) => {
+const { getCart } = cartByUserIdSlice.actions;
+const { addErrorToast } = notificationErrorSlice.actions;
+
+export const ButtonControls: React.FC<ButtonControlsProps> = ({ product, stock, quantity }) => {
+  const dispatch = useAppDispatch();
+  const [updateCartByUserId, { data, isError, error, isLoading }] = useUpdateCartByUserIdMutation();
+  const { cart } = useAppSelector((state) => state.cartByUserId);
+
+  function incrementCounter() {
+    updateCartByUserId({
+      id: cart?.id ?? 0,
+      products:
+        cart?.products.map((item) => {
+          if (item.id === product.id) {
+            return { id: item.id, quantity: item.quantity + 1 };
+          }
+          return { id: item.id, quantity: item.quantity };
+        }) ?? [],
+    });
+  }
+
+  function decrementCounter() {
+    if (quantity > 1) {
+      updateCartByUserId({
+        id: cart?.id ?? 0,
+        products:
+          cart?.products.map((item) => {
+            if (item.id === product.id) {
+              return { id: item.id, quantity: item.quantity - 1 };
+            }
+            return { id: item.id, quantity: item.quantity };
+          }) ?? [],
+      });
+    } else {
+      updateCartByUserId({
+        id: cart?.id ?? 0,
+        products:
+          cart?.products.filter((item) => {
+            if (item.id !== product.id) {
+              return { id: item.id, quantity: item.quantity };
+            }
+          }) ?? [],
+      });
+    }
+  }
+
+  React.useEffect(() => {
+    if (data) {
+      dispatch(getCart(data));
+    }
+  }, [dispatch, data]);
+
+  React.useEffect(() => {
+    if (isError) {
+      dispatch(addErrorToast({ message: getErrorMsg(error) ?? '' }));
+    }
+  }, [dispatch, error, isError]);
+
   return (
     <div className='cart-controls'>
-      <button className='decrease' aria-label='Decrease' onClick={onClickMinus}>
+      <button
+        className='decrease'
+        aria-label='Decrease'
+        disabled={isLoading}
+        onClick={decrementCounter}
+      >
         <svg
           aria-hidden='true'
           width='18'
@@ -31,9 +93,13 @@ export const ButtonControls: React.FC<ButtonControlsProps> = ({
         </svg>
       </button>
       <p>
-        {itemCount} {itemCount === 1 ? 'item' : 'items'}
+        {quantity} {quantity === 1 ? 'item' : 'items'}
       </p>
-      <button aria-label='Increase' disabled={itemCount >= stock} onClick={onClickAdd}>
+      <button
+        aria-label='Increase'
+        disabled={stock === quantity || isLoading}
+        onClick={incrementCounter}
+      >
         <svg
           aria-hidden='true'
           width='18'
