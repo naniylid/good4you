@@ -1,66 +1,50 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import './Catalog.module.scss';
 
-import { Search } from '../atoms/Search/index';
+import { Search } from '../Search';
 import { Skeleton } from './Skeleton';
-import { Card } from '../molecules/Card/Card';
+import { Card } from '../Card/Card';
+import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
+import { useGetSearchProductsQuery } from '../../redux/services/products/products';
+import { searchProductsParamsSlice } from '../../redux/slices/searchProduct/searchProductParamsSlice';
 
-import { useAppDispatch } from '../../redux/store';
-import { selectSearchSlice } from '../atoms/Search/slice';
-import { selectApiSlice } from '../../redux/api/selectors';
-import { fetchProducts } from '../../redux/api/slice';
-
-import { selectLimit, setLimit } from './slice';
+const { changeSearchProductsParams } = searchProductsParamsSlice.actions;
 
 export const Catalog: React.FC = () => {
+  const { name, limit, skip } = useAppSelector((state) => state.searchProductsParams);
+  const { data, isError, isLoading, isFetching } = useGetSearchProductsQuery({
+    name,
+    limit,
+    skip,
+  });
   const dispatch = useAppDispatch();
-  const isSearch = React.useRef(false);
-
-  const { searchValue } = useSelector(selectSearchSlice);
-  const { items, status } = useSelector(selectApiSlice);
-
-  const { limit } = useSelector(selectLimit);
-
-  const handleShowMore = () => {
-    dispatch(setLimit(limit + 12));
-  };
-
-  const getProducts = async () => {
-    const search = 'search?';
-    const q = searchValue;
-    dispatch(fetchProducts({ search, q, limit }));
-  };
-
-  React.useEffect(() => {
-    if (!isSearch.current) {
-      getProducts();
-    }
-    isSearch.current = false;
-  }, [searchValue, limit]);
 
   return (
     <section id='catalog' className='catalog'>
       <h1>Catalog</h1>
-      <Search />
-      {status === 'error' ? (
+      <Search loading={isLoading} />
+      {isError || isLoading ? (
         <div>
           <h2>Loading error. Please try again later</h2>
         </div>
       ) : (
         <ul className='catalog__list' role='list'>
-          {status === 'loading'
-            ? [...new Array(12)].map((_, index) => (
-                <li key={index}>
-                  <Skeleton />
-                </li>
-              ))
-            : items && items.map((item) => <Card key={item.id} item={item} />)}
+          {!isLoading &&
+            data?.products.map((product, i) => (
+              <Card product={product} key={`${product.id}-${i}`} />
+            ))}
+          {isFetching && Array.from({ length: 9 }).map((_, index) => <Skeleton key={index} />)}
         </ul>
       )}
-      {items && items.length >= limit && (
+      {!isLoading && data && skip + 9 < data?.total && (
         <div className='show-more'>
-          <button onClick={handleShowMore}>Show more</button>
+          <button
+            onClick={() => {
+              dispatch(changeSearchProductsParams({ name, limit, skip: skip + 9 }));
+            }}
+          >
+            Show more
+          </button>
         </div>
       )}
     </section>

@@ -3,8 +3,7 @@ import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { configureStore } from '@reduxjs/toolkit';
 import { Login } from './Login';
-import authReducer, { setUsername, setPassword, setValid } from './slice';
-import { authApi } from './apiLogin';
+
 import { describe, it, expect, vi } from 'vitest';
 
 // Создание мока для навигации

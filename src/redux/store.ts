@@ -1,30 +1,30 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { useDispatch } from 'react-redux';
-import apiSlice from './api/slice';
-import catalogSlice from '../components/Catalog/slice';
-import cartSlice from '../pages/Cart/redux/slice';
-import searchSlice from '../components/atoms/Search/slice';
-import { cartApi } from '../pages/Cart/redux/cartApi';
-import { productApi } from '../pages/Product/getProductApi';
-import authSlice from '../pages/Login/slice';
-import { authApi } from '../pages/Login/apiLogin';
+
+import { productsApi } from './services/products/products';
+import { cartByUserIdApi } from './services/cartById/cartById';
+import { authorizationApi } from './services/autorization/autorization';
+import { searchProductsParamsSlice } from './slices/searchProduct/searchProductParamsSlice';
+import cartByUserIdReducer from './slices/cartByUserIdSlice';
+import authReducer from './slices/authSlice';
+import { notificationErrorSlice } from './slices/notificationError';
 
 export const store = configureStore({
   reducer: {
-    apiSlice,
-    catalogSlice,
-    cartSlice,
-    searchSlice,
-    auth: authSlice,
-    [cartApi.reducerPath]: cartApi.reducer,
-    [productApi.reducerPath]: productApi.reducer,
-    [authApi.reducerPath]: authApi.reducer,
+    [productsApi.reducerPath]: productsApi.reducer,
+    [cartByUserIdApi.reducerPath]: cartByUserIdApi.reducer,
+    [authorizationApi.reducerPath]: authorizationApi.reducer,
+    searchProductsParams: searchProductsParamsSlice.reducer,
+    cartByUserId: cartByUserIdReducer,
+    auth: authReducer,
+    error: notificationErrorSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(productApi.middleware, cartApi.middleware, authApi.middleware),
+    getDefaultMiddleware().concat(
+      productsApi.middleware,
+      cartByUserIdApi.middleware,
+      authorizationApi.middleware,
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
-
 export type AppDispatch = typeof store.dispatch;
-export const useAppDispatch = () => useDispatch<AppDispatch>();
