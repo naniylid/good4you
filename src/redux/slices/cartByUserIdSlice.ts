@@ -2,11 +2,11 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { Cart } from '../services/cartById/types';
 
-interface initialCart {
+interface InitialCart {
   cart: Cart | null;
 }
 
-const initialState: initialCart = {
+const initialState: InitialCart = {
   cart: null,
 };
 

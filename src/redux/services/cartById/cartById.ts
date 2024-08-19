@@ -16,8 +16,8 @@ export const cartByUserIdApi = createApi({
       }),
     }),
     updateCartByUserId: builder.mutation<Cart, UpdateCartRequest>({
-      query: ({ id, products, merge }) => ({
-        url: `carts/${id}`,
+      query: ({ products, merge }) => ({
+        url: `carts/5`,
         headers: {
           Authorization: `Bearer ${getToken()}`,
         },

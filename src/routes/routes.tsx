@@ -14,9 +14,9 @@ export default function AppRoutes() {
         <Route index element={<Home />} />
         <Route path='/product/:id' element={<ProductPage />} />
         <Route path='/cart' element={<Cart />} />
-        <Route path='/login' element={<Login />} />
         <Route path='*' element={<NotFound />} />
       </Route>
+      <Route path='/login' element={<Login />} />
     </Routes>
   );
 }

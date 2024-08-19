@@ -1,11 +1,11 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { authorizationApi } from '../services/autorization/autorization';
 
-interface initialAuth {
+interface InitialAuth {
   id: number | null;
 }
 
-const initialState: initialAuth = {
+const initialState: InitialAuth = {
   id: null,
 };
 

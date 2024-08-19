@@ -1,9 +1,9 @@
 import React from 'react';
 import './Catalog.module.scss';
 
-import { Search } from '../atoms/Search/index';
+import { Search } from '../Search';
 import { Skeleton } from './Skeleton';
-import { Card } from '../molecules/Card/Card';
+import { Card } from '../Card/Card';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { useGetSearchProductsQuery } from '../../redux/services/products/products';
 import { searchProductsParamsSlice } from '../../redux/slices/searchProduct/searchProductParamsSlice';

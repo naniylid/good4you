@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import baseQueryWithRedirect from '../redirect/redirectQuery';
 import { Product, Products } from './types';
 import { getToken } from '../../../utils/index';
-import { GetSearchProductsParams } from '@app/store/slices/searchProductParams/types';
+import { GetSearchProductsParams } from '../../slices/searchProduct/types';
 
 export const productsApi = createApi({
   reducerPath: 'productsApi',

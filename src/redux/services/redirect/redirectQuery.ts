@@ -1,7 +1,7 @@
 import { BaseQueryFn, FetchArgs, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { FetchBaseQueryError } from '@reduxjs/toolkit/query';
 
-const baseQuery = fetchBaseQuery({ baseUrl: 'https://dummyjson.com/auth' });
+const baseQuery = fetchBaseQuery({ baseUrl: 'https://dummyjson.com/' });
 
 const baseQueryWithRedirect: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (
   args,
