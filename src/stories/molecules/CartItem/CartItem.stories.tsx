@@ -1,12 +1,13 @@
 import { Meta, StoryFn } from '@storybook/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { withReduxProvider } from '../../../../.storybook/decorators';
-import { CartList, CartItemProp } from '../../../components/CartItem/CartItem';
+import { CartItem, CartItemProp } from '../../../components/CartItem/CartItem';
+import { ProductCart } from '../../../redux/services/cartById/types';
 import image from '../Card/image.svg';
-import './style.scss';
+import './CartItem.scss';
 
 export default {
-  component: CartList,
+  component: CartItem,
   decorators: [
     withReduxProvider,
     (StoryComponent) => (
@@ -17,18 +18,20 @@ export default {
   ],
 } as Meta;
 
-const mockItem: CartItemProp = {
-  item: {
-    id: 1,
-    title: 'Essence Mascara Lash Princess',
-    thumbnail: image,
-    price: 100,
-    quantity: 1,
-    discountPercentage: 10,
-  },
+const mockProduct: ProductCart = {
+  id: 1,
+  title: 'Essence Mascara Lash Princess',
+  price: 100,
+  quantity: 2,
+  thumbnail: image,
+  total: 5,
+  discountPercentage: 10,
+  discountedTotal: 90,
 };
 
-const Template: StoryFn<CartItemProp> = (args) => <CartList {...args} />;
+const Template: StoryFn<CartItemProp> = (args) => <CartItem {...args} />;
 
 export const Default = Template.bind({});
-Default.args = mockItem;
+Default.args = {
+  product: mockProduct,
+};

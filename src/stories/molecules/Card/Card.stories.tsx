@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { withReduxProvider } from '../../../../.storybook/decorators';
 import image from './image.svg';
 import './Card.scss';
+import { Product } from '../../../redux/services/products/types';
 
 export default {
   component: Card,
@@ -17,7 +18,7 @@ export default {
   ],
 } as Meta;
 
-const mockItem = {
+const mockProduct: Product = {
   id: 1,
   title: 'Essence Mascara Lash Princess',
   images: [image],
@@ -25,12 +26,15 @@ const mockItem = {
   discountPercentage: 10,
   stock: 10,
   tags: ['tag'],
-  thumbnail: '',
+  thumbnail: image,
+  description: '',
+  category: 'beauty',
+  rating: 4.5,
 };
 
 const Template: StoryFn<CardProp> = (args) => <Card {...args} />;
 
 export const Default = Template.bind({});
 Default.args = {
-  item: mockItem,
+  product: mockProduct,
 };

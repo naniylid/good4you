@@ -11,6 +11,7 @@ import useGetQuantity from '../../hooks/useGetCount';
 import { useAppDispatch, useAppSelector } from '../../hooks/useRedux';
 import { useUpdateCartByUserIdMutation } from '../../redux/services/cartById/cartById';
 import { useGetProductByIdQuery } from '../../redux/services/products/products';
+import { Loading } from '../Loading';
 
 export type CartItemProp = {
   product: ProductCart;
@@ -18,7 +19,7 @@ export type CartItemProp = {
 
 const { getCart } = cartByUserIdSlice.actions;
 
-export const CartList: React.FC<CartItemProp> = ({ product }) => {
+export const CartItem: React.FC<CartItemProp> = ({ product }) => {
   const quantity = useGetQuantity(product.id);
   const dispatch = useAppDispatch();
   const [updateCartByUserId, { data, isLoading }] = useUpdateCartByUserIdMutation();
@@ -44,7 +45,7 @@ export const CartList: React.FC<CartItemProp> = ({ product }) => {
   }, [dispatch, data]);
 
   return isLoading ? (
-    <p>Loading...</p>
+    <Loading />
   ) : (
     <li className='cart-item' key={`cart-item-${product.id}`}>
       <img src={product.thumbnail} alt={product.title} loading='lazy' />
@@ -52,7 +53,7 @@ export const CartList: React.FC<CartItemProp> = ({ product }) => {
         <Link to={`/product/${product.id}`}>
           <LinkTitle text={product.title} />
         </Link>
-        <p>$ {product.price}</p>
+        <p>${product.price}</p>
       </div>
       <ButtonControls product={product} quantity={quantity} stock={dataProduct?.stock ?? 0} />
       <div className='delete'>

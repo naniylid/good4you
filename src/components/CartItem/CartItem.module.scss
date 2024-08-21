@@ -39,3 +39,25 @@
     }
   }
 }
+
+.delete {
+  margin-left: 48px;
+
+  button {
+    border: none;
+    background-color: transparent;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 143%;
+    text-align: right;
+    color: #b2b5bb;
+
+    &:hover {
+      text-decoration: underline;
+      text-decoration-skip-ink: none;
+      text-align: right;
+      color: #444b58;
+      background: none;
+    }
+  }
+}

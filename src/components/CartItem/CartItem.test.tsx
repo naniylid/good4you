@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
-import { CartList } from './CartItem';
+import { CartItem } from './CartItem';
 import { BrowserRouter } from 'react-router-dom';
 
 const mockProduct = {
@@ -40,12 +40,12 @@ const store = configureStore({
   },
 });
 
-describe('CartList', () => {
-  test('renders CartList component', () => {
+describe('CartItem', () => {
+  test('renders CartItem component', () => {
     render(
       <BrowserRouter>
         <Provider store={store}>
-          <CartList item={mockProduct} userId={123} />
+          <CartItem item={mockProduct} userId={123} />
         </Provider>
       </BrowserRouter>,
     );
@@ -59,7 +59,7 @@ describe('CartList', () => {
     render(
       <BrowserRouter>
         <Provider store={store}>
-          <CartList item={mockProduct} userId={123} />
+          <CartItem item={mockProduct} userId={123} />
         </Provider>
       </BrowserRouter>,
     );
@@ -72,7 +72,7 @@ describe('CartList', () => {
     render(
       <BrowserRouter>
         <Provider store={store}>
-          <CartList item={mockProduct} userId={123} />
+          <CartItem item={mockProduct} userId={123} />
         </Provider>
       </BrowserRouter>,
     );
@@ -85,7 +85,7 @@ describe('CartList', () => {
     render(
       <BrowserRouter>
         <Provider store={store}>
-          <CartList item={mockProduct} userId={123} />
+          <CartItem item={mockProduct} userId={123} />
         </Provider>
       </BrowserRouter>,
     );

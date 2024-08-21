@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 
 import './Cart.module.scss';
 
-import { CartList } from '../../components/CartItem/CartItem';
+import { CartItem } from '../../components/CartItem/CartItem';
 import useAuth from '../../hooks/useAuth';
 import { useGetCartByUserIdQuery } from '../../redux/services/cartById/cartById';
 import { useAppSelector } from '../../hooks/useRedux';
@@ -29,7 +29,7 @@ export const Cart: React.FC = () => {
           <div className='cart--block'>
             <div className='cart--block__left'>
               <ul>
-                {cart?.products.map((product) => <CartList product={product} key={product.id} />)}
+                {cart?.products.map((product) => <CartItem product={product} key={product.id} />)}
               </ul>
             </div>
 
@@ -40,11 +40,11 @@ export const Cart: React.FC = () => {
               </div>
               <div className='without-discount'>
                 <h4>Price without discount</h4>
-                {<p>{cart?.total.toFixed(2)}$</p>}
+                {<p>${cart?.total.toFixed(2)}</p>}
               </div>
               <div className='total-price'>
                 <h4>Total price</h4>
-                <p>{cart?.discountedTotal.toFixed(2)}$</p>
+                <p>${cart?.discountedTotal.toFixed(2)}</p>
               </div>
             </div>
           </div>
