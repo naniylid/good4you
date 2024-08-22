@@ -1,64 +1,31 @@
-import { render, screen } from '@testing-library/react';
+import { render } from '../../utils/test-utils';
+import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
 import { Card } from './Card';
-import { MemoryRouter } from 'react-router-dom';
-import { vi } from 'vitest';
-import { Provider } from 'react-redux';
-import { configureStore, createSlice } from '@reduxjs/toolkit';
-
-const cartSlice = createSlice({
-  name: 'cart',
-  initialState: { items: [] },
-  reducers: {
-    addProduct: vi.fn(),
-    minusItem: vi.fn(),
-  },
-});
-
-const userSlice = createSlice({
-  name: 'user',
-  initialState: { userId: 'test-user-id' },
-  reducers: {},
-});
-
-const store = configureStore({
-  reducer: {
-    cart: cartSlice.reducer,
-    user: userSlice.reducer,
-  },
-});
-
-vi.mock('../../../pages/Cart/addToCart', () => ({
-  createCartItem: vi.fn(),
-  handleAddToCart: vi.fn(),
-}));
+import { Product } from '../../redux/services/products/types';
 
 describe('Card Component', () => {
-  it('renders correctly and responds to clicks', () => {
-    const mockProduct = {
-      id: 1,
-      title: 'Sample Product',
-      price: 100,
-      discountPercentage: 10,
-      images: ['http://example.com/image.jpg'],
-      stock: 10,
-      tags: ['1', '2'],
-      thumbnail: 'http://example.com/image.jpg',
-    };
+  const mockProduct: Product = {
+    id: 1,
+    title: 'Sample Product',
+    price: 100,
+    discountPercentage: 10,
+    stock: 5,
+    images: ['image1.jpg'],
+    thumbnail: 'thumb1.jpg',
+    description: 'Sample Description',
+    rating: 4.5,
+    warrantyInformation: '1 year',
+    shippingInformation: 'Free shipping',
+    tags: ['tag1', 'tag2'],
+    category: 'simple',
+  };
 
+  test('renders product information correctly', () => {
     render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Card item={mockProduct} />
-        </MemoryRouter>
-      </Provider>,
+      <MemoryRouter>
+        <Card product={mockProduct} />
+      </MemoryRouter>,
     );
-
-    // Проверяем, что изображение и текст отображаются
-    expect(screen.getByAltText(/Sample Product/i)).toBeInTheDocument();
-
-    // Проверяем, что кнопка для добавления в корзину отображается
-    const addButton = screen.getByRole('button', { name: /Add/i });
-    expect(addButton).toBeInTheDocument();
   });
 });

@@ -8,19 +8,17 @@ describe('Button component', () => {
   it('renders correctly', () => {
     const mockOnClickAdd = vi.fn();
 
-    render(<Button onClickAdd={mockOnClickAdd} />);
+    render(<Button onClick={mockOnClickAdd} />);
 
-    // Проверка, что кнопка рендерится
     const button = screen.getByRole('button', { name: /add to cart/i });
     expect(button).toBeInTheDocument();
   });
 
-  it('calls onClickAdd when clicked', async () => {
+  it('calls onClick when clicked', async () => {
     const mockOnClickAdd = vi.fn();
 
-    render(<Button onClickAdd={mockOnClickAdd} />);
+    render(<Button onClick={mockOnClickAdd} />);
 
-    // Проверка, что onClickAdd вызывается при клике
     const button = screen.getByRole('button', { name: /add to cart/i });
     await userEvent.click(button);
     expect(mockOnClickAdd).toHaveBeenCalledTimes(1);
