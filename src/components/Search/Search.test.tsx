@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '../../../utils/test-utils';
+import { render, screen, fireEvent } from '../../utils/test-utils';
 import '@testing-library/jest-dom';
 
 import { Search } from './index';
