@@ -1,10 +1,11 @@
 @import '../layout/MainLayout.module.scss';
 @import '../components/Header/Header.module.scss';
-@import '../components/Catalog/Catalog.module.scss';
+@import '../components//CatalogSection/Catalog/Catalog.module.scss';
 @import '../components/FAQ/FAQ.module.scss';
-@import '../components/Button/Button.module.scss';
-@import '../components/Link/Link.module.scss';
-@import '../components/Card/Card.module.scss';
+@import '../components/ui/Button/Button.module.scss';
+@import '../components/ui/Link/Link.module.scss';
+
+@import '../components/CatalogSection/Card/Card.module.scss';
 @import '../components/Navigation/Navigation.module.scss';
 
 @import '../pages/Product/ProductPage.module.scss';
