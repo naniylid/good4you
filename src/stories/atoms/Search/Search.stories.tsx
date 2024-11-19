@@ -1,14 +1,14 @@
 import { Meta, StoryFn } from '@storybook/react';
-import { Search } from '../../../components/Search';
+import { Search } from '../../../components/ui/Search';
 import { withReduxProvider } from '../../../../.storybook/decorators';
 
 export default {
-  component: Search,
-  decorators: [withReduxProvider],
+    component: Search,
+    decorators: [withReduxProvider],
 } as Meta;
 
 const Template: StoryFn = () => {
-  return <Search />;
+    return <Search />;
 };
 
 export const Default = Template.bind({});

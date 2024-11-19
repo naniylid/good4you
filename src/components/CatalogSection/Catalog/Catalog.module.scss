@@ -1,0 +1,64 @@
+@import '../../ui/Search/Search.module.scss';
+@import '../Card/Card.module.scss';
+
+.catalog {
+    padding: 48px 210px 48px 130px;
+
+    &__list {
+        max-width: 1180px;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-column-gap: 35px;
+        -moz-column-gap: 35px;
+        column-gap: 35px;
+        row-gap: 19px;
+    }
+
+    .show-more {
+        margin-top: 48px;
+
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+
+        button {
+            border-radius: 4px;
+            padding: 20px 50px;
+            min-width: 177px;
+            height: 62px;
+            font-weight: 400;
+            font-size: 15px;
+
+            color: #fff;
+        }
+    }
+}
+
+@media (max-width: 1200px) {
+    .catalog {
+        padding: 48px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .catalog {
+        padding: 24px 10px;
+
+        h2 {
+            font-size: 28px;
+        }
+
+        input {
+            margin: 24px 0;
+            padding: 15px;
+            font-size: 14px;
+        }
+
+        .show-more button {
+            padding: 15px 40px;
+            font-size: 14px;
+        }
+    }
+}
